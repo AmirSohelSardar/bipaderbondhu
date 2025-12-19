@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NGO Identity Card Application</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .home-btn {
+      padding: 10px 20px;
+      background: white;
+      color: #667eea;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+
+    .home-btn:hover {
+      background: #f3f4f6;
+      transform: translateY(-2px);
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5em);
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+      min-width: 200px;
+    }
+
+    .action-btn.secondary {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    .action-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .form-container,
+    .card-container,
+    .check-container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .photo-upload {
+      border: 2px dashed #667eea;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .photo-upload:hover {
+      background: #f3f4f6;
+    }
+
+    .photo-preview {
+      display: none;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .photo-preview img {
+      width: 120px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 3px solid #667eea;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .submit-btn:not(:disabled):hover {
+      opacity: 0.9;
+    }
+
+    .success-card {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .success-icon {
+      font-size: 60px;
+      color: #10b981;
+      margin-bottom: 15px;
+    }
+
+    .success-card h2 {
+      color: #10b981;
+      margin-bottom: 10px;
+    }
+
+    .download-btn {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 20px auto;
+      padding: 15px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: transform 0.2s;
+      font-weight: bold;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .download-btn:disabled {
+      background: linear-gradient(135deg, #9ca3af, #6b7280);
+      cursor: not-allowed;
+      transform: scale(1);
+    }
+
+    .back-btn {
+      display: block;
+      width: 100%;
+      max-width: 200px;
+      margin: 10px auto;
+      padding: 10px;
+      background: #6b7280;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #4b5563;
+    }
+
+    .error, .success {
+      text-align: center;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .error {
+      color: #dc2626;
+      background: #fee2e2;
+    }
+
+    .success {
+      color: #059669;
+      background: #d1fae5;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .check-email-input {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .check-email-input input {
+      flex: 1;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 10px;
+      }
+
+      .form-container,
+      .card-container,
+      .check-container {
+        padding: 20px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="top-bar">
+      <a href="/" class="home-btn">← Back to Home</a>
+      <div></div>
+    </div>
+
+    <div class="header">
+      <h1>NGO Identity Card System</h1>
+      <p>Bipader Bondhu Welfare Society</p>
+    </div>
+
+    <div class="button-group" id="buttonGroup">
+      <button class="action-btn" onclick="showApplyForm()">Apply for Identity Card</button>
+      <button class="action-btn secondary" onclick="showCheckForm()">Check My Application</button>
+    </div>
+
+    <!-- CHECK APPLICATION FORM -->
+    <div class="check-container" id="checkContainer">
+      <h2 style="text-align: center; margin-bottom: 20px; color: #667eea;">Check Your Application</h2>
+      
+      <div class="check-email-input">
+        <input type="email" id="checkEmail" placeholder="Enter your email address" />
+        <button class="submit-btn" style="width: auto; padding: 12px 30px;" onclick="checkApplication()">Check</button>
+      </div>
+
+      <div class="loading" id="checkLoadingSpinner">
+        <div class="spinner"></div>
+        <p style="margin-top: 10px;">Checking...</p>
+      </div>
+
+      <div id="checkErrorMsg" class="error"></div>
+      <div id="checkSuccessMsg" class="success"></div>
+
+      <button class="back-btn" onclick="showButtons()">← Back</button>
+    </div>
+
+    <!-- APPLY FORM -->
+    <div class="form-container" id="formContainer">
+      <h2 style="text-align: center; margin-bottom: 20px; color: #667eea;">Application Form</h2>
+      
+      <form id="registrationForm">
+
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Address *</label>
+          <input type="text" id="address" required />
+        </div>
+
+        <div class="form-group">
+          <label>Phone *</label>
+          <input type="tel" id="phone" required pattern="[0-9]{10,15}" />
+        </div>
+
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="email" required />
+        </div>
+
+        <div class="form-group">
+          <label>Blood Group *</label>
+          <select id="bloodGroup" required>
+            <option value="">Select</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Joining Date *</label>
+          <input type="date" id="joiningDate" required />
+        </div>
+
+        <div class="form-group">
+          <label>Upload Photo * (Max 2MB)</label>
+          <div class="photo-upload" onclick="document.getElementById('photo').click()">
+            Click to upload photo
+            <input type="file" id="photo" accept="image/*" hidden />
+          </div>
+          <div class="photo-preview" id="photoPreview">
+            <img id="previewImg" />
+          </div>
+        </div>
+
+        <div class="loading" id="loadingSpinner">
+          <div class="spinner"></div>
+          <p style="margin-top: 10px;">Generating your ID card... Please wait...</p>
+        </div>
+
+        <div id="errorMsg" class="error"></div>
+        <div id="successMsg" class="success"></div>
+
+        <button class="submit-btn" type="submit" id="submitBtn">Generate ID Card</button>
+      </form>
+
+      <button class="back-btn" onclick="showButtons()">← Back</button>
+    </div>
+
+    <!-- SUCCESS CARD -->
+    <div class="card-container" id="cardContainer">
+      <div class="success-card">
+        <div class="success-icon">✅</div>
+        <h2 id="successTitle">Application Submitted Successfully!</h2>
+        <p style="margin: 10px 0; color: #666;">Your NGO Identity Card has been generated</p>
+        
+        <div style="margin: 20px 0; padding: 15px; background: #f3f4f6; border-radius: 10px;">
+          <p style="font-size: 14px; color: #666; margin-bottom: 5px;">Your Unique ID</p>
+          <h3 style="color: #1e40af; font-size: 22px;" id="displayNgoId"></h3>
+        </div>
+
+        <button class="download-btn" id="downloadBtn">📥 Download ID Card</button>
+
+        <div style="margin-top: 20px;">
+          <button class="back-btn" onclick="showButtons()">← Apply Another / Check Status</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const buttonGroup = document.getElementById('buttonGroup');
+    const formContainer = document.getElementById('formContainer');
+    const checkContainer = document.getElementById('checkContainer');
+    const registrationForm = document.getElementById('registrationForm');
+    const cardContainer = document.getElementById('cardContainer');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const previewImg = document.getElementById('previewImg');
+    const photoPreview = document.getElementById('photoPreview');
+    const submitBtn = document.getElementById('submitBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const checkLoadingSpinner = document.getElementById('checkLoadingSpinner');
+
+    let photoData = '';
+    let applicationId = '';
+    let ngoId = '';
+
+    const API_URL = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3000/api/identity'
+      : 'https://bipaderbondhubackend-server.vercel.app/api/identity';
+
+    function showButtons() {
+      buttonGroup.style.display = 'flex';
+      formContainer.classList.remove('active');
+      checkContainer.classList.remove('active');
+      cardContainer.classList.remove('active');
+      resetForms();
+    }
+
+    function showApplyForm() {
+      buttonGroup.style.display = 'none';
+      formContainer.classList.add('active');
+    }
+
+    function showCheckForm() {
+      buttonGroup.style.display = 'none';
+      checkContainer.classList.add('active');
+    }
+
+    function resetForms() {
+      registrationForm.reset();
+      photoData = '';
+      photoPreview.style.display = 'none';
+      hideMessages();
+      document.getElementById('checkEmail').value = '';
+      hideCheckMessages();
+    }
+
+    async function checkApplication() {
+      const email = document.getElementById('checkEmail').value.trim();
+      
+      if (!email) {
+        showCheckError('Please enter your email address');
+        return;
+      }
+
+      hideCheckMessages();
+      checkLoadingSpinner.classList.add('active');
+
+      try {
+        const response = await fetch(`${API_URL}/check/${encodeURIComponent(email)}`);
+        const data = await response.json();
+
+        checkLoadingSpinner.classList.remove('active');
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            showCheckError('No application found for this email. Please apply first.');
+          } else {
+            throw new Error(data.message || 'Failed to check application');
+          }
+          return;
+        }
+
+        // Show success card
+        applicationId = data.application._id;
+        ngoId = data.application.ngoId;
+        
+        document.getElementById('displayNgoId').textContent = ngoId;
+        document.getElementById('successTitle').textContent = 'Application Found!';
+        
+        checkContainer.classList.remove('active');
+        cardContainer.classList.add('active');
+
+      } catch (error) {
+        checkLoadingSpinner.classList.remove('active');
+        showCheckError(error.message);
+      }
+    }
+
+    document.getElementById('photo').onchange = e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showError('Please select a valid image');
+        return;
+      }
+
+      if (file.size > 2 * 1024 * 1024) {
+        showError('Image size must be less than 2MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        photoData = reader.result;
+        previewImg.src = photoData;
+        photoPreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    };
+
+    registrationForm.onsubmit = async (e) => {
+      e.preventDefault();
+
+      hideMessages();
+
+      if (!photoData) {
+        showError('Please upload your photo');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      loadingSpinner.classList.add('active');
+
+      const formData = {
+        name: document.getElementById('name').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        bloodGroup: document.getElementById('bloodGroup').value,
+        joiningDate: document.getElementById('joiningDate').value,
+        photoBase64: photoData,
+      };
+
+      try {
+        const response = await fetch(`${API_URL}/apply`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Application failed');
+        }
+
+        // Success
+        applicationId = data.application._id;
+        ngoId = data.ngoId;
+
+        if (data.alreadyExists) {
+          document.getElementById('successTitle').textContent = 'Application Already Exists!';
+        } else {
+          document.getElementById('successTitle').textContent = 'Application Submitted Successfully!';
+        }
+
+        document.getElementById('displayNgoId').textContent = ngoId;
+
+        formContainer.classList.remove('active');
+        cardContainer.classList.add('active');
+
+      } catch (error) {
+        showError(error.message);
+        submitBtn.disabled = false;
+      } finally {
+        loadingSpinner.classList.remove('active');
+      }
+    };
+
+    /**
+     * ✅ FIXED: Download ID Card Image (Direct from Cloudinary)
+     */
+    downloadBtn.onclick = async () => {
+      if (!applicationId) {
+        alert("Application ID not available");
+        return;
+      }
+
+      const originalText = downloadBtn.innerHTML;
+
+      try {
+        downloadBtn.disabled = true;
+        downloadBtn.innerHTML = '⏳ Downloading...';
+
+        // Get image URL from backend
+        const response = await fetch(`${API_URL}/download/${applicationId}`);
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to get image');
+        }
+
+        const data = await response.json();
+
+        // Download image directly from Cloudinary
+        const imageResponse = await fetch(data.imageUrl);
+        const blob = await imageResponse.blob();
+
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${ngoId}-ID-Card.png`;
+        document.body.appendChild(link);
+        link.click();
+
+        // Cleanup
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+
+        showSuccess('ID card downloaded successfully!');
+        setTimeout(() => {
+          hideMessages();
+        }, 3000);
+
+      } catch (error) {
+        console.error('Download error:', error);
+        showError(`Download failed: ${error.message}`);
+      } finally {
+        downloadBtn.disabled = false;
+        downloadBtn.innerHTML = originalText;
+      }
+    };
+
+    function showError(message) {
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
+    }
+
+    function showSuccess(message) {
+      const successMsg = document.getElementById('successMsg');
+      successMsg.textContent = message;
+      successMsg.style.display = 'block';
+    }
+
+    function hideMessages() {
+      document.getElementById('errorMsg').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'none';
+    }
+
+    function showCheckError(message) {
+      const errorMsg = document.getElementById('checkErrorMsg');
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
+    }
+
+    function showCheckSuccess(message) {
+      const successMsg = document.getElementById('checkSuccessMsg');
+      successMsg.textContent = message;
+      successMsg.style.display = 'block';
+    }
+
+    function hideCheckMessages() {
+      document.getElementById('checkErrorMsg').style.display = 'none';
+      document.getElementById('checkSuccessMsg').style.display = 'none';
+    }
+
+    document.getElementById('checkEmail').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkApplication();
+      }
+    });
+  </script>
+</body>
+</html>
