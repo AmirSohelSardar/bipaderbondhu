@@ -38,6 +38,7 @@ export default function Footer() {
               <li><a href="/about" className="hover:text-white transition">About Us</a></li>
               <li><a href="/search" className="hover:text-white transition">Updates</a></li>
               <li><a href="/contact" className="hover:text-white transition">Contact</a></li>
+              <li><a href="/donate" className="hover:text-white transition">Donate</a></li>
             </ul>
           </div>
 

@@ -15,6 +15,7 @@ import PostPage from './pages/PostPage';
 import ScrollToTop from './components/ScrollToTop';
 import Search from './pages/Search';
 import Contact from './pages/Contact';
+import Donate from './pages/Donate';
 
 
 
@@ -31,6 +32,7 @@ export default function App() {
           <Route path='/about' element={<About />} />
           <Route path='/sign-in' element={<SignIn />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path='/donate' element={<Donate />} />
 
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/search' element={<Search />} />
