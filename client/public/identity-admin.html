@@ -21,7 +21,7 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: auto;
     }
 
@@ -57,7 +57,6 @@
       font-size: clamp(1.5rem, 4vw, 2.5rem);
     }
 
-    /* LOGIN */
     .login-box {
       max-width: 400px;
       margin: 0 auto;
@@ -98,7 +97,6 @@
       background: #2a5298;
     }
 
-    /* DASHBOARD */
     .dashboard {
       display: none;
       background: white;
@@ -135,7 +133,37 @@
       background: #dc2626;
     }
 
-    /* TABLE RESPONSIVE */
+    .filter-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 10px 20px;
+      background: #f1f5f9;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    .filter-tab.active {
+      background: #1e3c72;
+      color: white;
+      border-color: #1e3c72;
+    }
+
+    .filter-tab:hover {
+      background: #e2e8f0;
+    }
+
+    .filter-tab.active:hover {
+      background: #2a5298;
+    }
+
     .table-container {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -145,7 +173,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-      min-width: 800px;
+      min-width: 1000px;
     }
 
     th, td {
@@ -162,7 +190,30 @@
       top: 0;
     }
 
-    .download-btn, .delete-btn {
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 12px;
+      display: inline-block;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-verified {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-rejected {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .action-btn {
       padding: 6px 12px;
       color: white;
       border: none;
@@ -173,12 +224,28 @@
       margin: 2px;
     }
 
-    .download-btn {
+    .verify-btn {
       background: #10b981;
     }
 
-    .download-btn:hover {
+    .verify-btn:hover {
       background: #059669;
+    }
+
+    .reject-btn {
+      background: #f59e0b;
+    }
+
+    .reject-btn:hover {
+      background: #d97706;
+    }
+
+    .download-btn {
+      background: #3b82f6;
+    }
+
+    .download-btn:hover {
+      background: #2563eb;
     }
 
     .download-btn:disabled {
@@ -220,7 +287,6 @@
       display: none;
     }
 
-    /* RESPONSIVE */
     @media (max-width: 768px) {
       body {
         padding: 10px;
@@ -239,7 +305,7 @@
         font-size: 12px;
       }
 
-      .download-btn, .delete-btn {
+      .action-btn {
         padding: 4px 8px;
         font-size: 11px;
       }
@@ -273,6 +339,21 @@
         <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
 
+      <div class="filter-tabs">
+        <div class="filter-tab active" onclick="filterApplications('all')">
+          All (<span id="countAll">0</span>)
+        </div>
+        <div class="filter-tab" onclick="filterApplications('pending')">
+          Pending (<span id="countPending">0</span>)
+        </div>
+        <div class="filter-tab" onclick="filterApplications('verified')">
+          Verified (<span id="countVerified">0</span>)
+        </div>
+        <div class="filter-tab" onclick="filterApplications('rejected')">
+          Rejected (<span id="countRejected">0</span>)
+        </div>
+      </div>
+
       <div id="dashboardError" class="error"></div>
       <div id="dashboardSuccess" class="success"></div>
 
@@ -286,12 +367,13 @@
               <th>Phone</th>
               <th>Blood</th>
               <th>NGO ID</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="tableBody">
             <tr>
-              <td colspan="7" class="empty">Loading...</td>
+              <td colspan="8" class="empty">Loading...</td>
             </tr>
           </tbody>
         </table>
@@ -304,6 +386,9 @@
     const API_URL = window.location.hostname === 'localhost' 
       ? 'http://localhost:3000/api/identity'
       : 'https://bipaderbondhubackend-server.vercel.app/api/identity';
+
+    let allApplications = [];
+    let currentFilter = 'all';
 
     async function adminLogin() {
       const email = document.getElementById('adminEmail').value.trim();
@@ -332,7 +417,6 @@
           throw new Error(data.message || 'Login failed');
         }
 
-        // Save token
         sessionStorage.setItem("ngo_admin_token", data.token);
         document.getElementById('loginBox').style.display = "none";
         document.getElementById('dashboard').style.display = "block";
@@ -353,10 +437,9 @@
 
     async function loadApplications() {
       const tbody = document.getElementById("tableBody");
-      const appCount = document.getElementById("appCount");
       const dashboardError = document.getElementById('dashboardError');
 
-      tbody.innerHTML = '<tr><td colspan="7" class="empty">Loading...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="empty">Loading...</td></tr>';
       dashboardError.style.display = 'none';
       dashboardError.textContent = '';
 
@@ -374,47 +457,185 @@
           throw new Error(data.message || 'Failed to load applications');
         }
 
-        tbody.innerHTML = "";
-
-        if (data.applications.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="7" class="empty">No applications yet</td></tr>';
-          appCount.textContent = '0';
-          return;
-        }
-
-        appCount.textContent = data.applications.length;
-
-        data.applications.forEach((app, i) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${i + 1}</td>
-            <td>${app.name}</td>
-            <td style="word-break: break-word;">${app.email}</td>
-            <td>${app.phone}</td>
-            <td>${app.bloodGroup}</td>
-            <td>${app.ngoId}</td>
-            <td>
-              <button class="download-btn" onclick="downloadImage('${app._id}', '${app.ngoId}')" id="download-${app._id}">
-                📥 Download ID
-              </button>
-              <button class="delete-btn" onclick="deleteApplication('${app._id}')">
-                🗑️ Delete
-              </button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
+        allApplications = data.applications;
+        updateCounts();
+        renderApplications();
 
       } catch (error) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty">Error loading applications</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="empty">Error loading applications</td></tr>';
         dashboardError.textContent = error.message;
         dashboardError.style.display = 'block';
       }
     }
 
-    /**
-     * ✅ FIXED: Download ID Card Image (Direct from Cloudinary)
-     */
+    function updateCounts() {
+      const counts = {
+        all: allApplications.length,
+        pending: allApplications.filter(app => app.status === 'pending').length,
+        verified: allApplications.filter(app => app.status === 'verified').length,
+        rejected: allApplications.filter(app => app.status === 'rejected').length,
+      };
+
+      document.getElementById('appCount').textContent = counts.all;
+      document.getElementById('countAll').textContent = counts.all;
+      document.getElementById('countPending').textContent = counts.pending;
+      document.getElementById('countVerified').textContent = counts.verified;
+      document.getElementById('countRejected').textContent = counts.rejected;
+    }
+
+    function filterApplications(filter) {
+      currentFilter = filter;
+      
+      // Update active tab
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      renderApplications();
+    }
+
+    function renderApplications() {
+      const tbody = document.getElementById("tableBody");
+      
+      let filteredApps = allApplications;
+      if (currentFilter !== 'all') {
+        filteredApps = allApplications.filter(app => app.status === currentFilter);
+      }
+
+      tbody.innerHTML = "";
+
+      if (filteredApps.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="empty">No applications in this category</td></tr>';
+        return;
+      }
+
+      filteredApps.forEach((app, i) => {
+        const tr = document.createElement("tr");
+        
+        const statusClass = `status-${app.status}`;
+        const statusText = app.status.charAt(0).toUpperCase() + app.status.slice(1);
+
+        let actionButtons = '';
+        
+        if (app.status === 'pending') {
+          actionButtons = `
+            <button class="action-btn verify-btn" onclick="verifyApplication('${app._id}')">
+              ✓ Verify
+            </button>
+            <button class="action-btn reject-btn" onclick="rejectApplication('${app._id}')">
+              ✗ Reject
+            </button>
+          `;
+        } else if (app.status === 'verified') {
+          actionButtons = `
+            <button class="action-btn download-btn" onclick="downloadImage('${app._id}', '${app.ngoId}')" id="download-${app._id}">
+              📥 Download
+            </button>
+          `;
+        } else if (app.status === 'rejected') {
+          actionButtons = `
+            <button class="action-btn verify-btn" onclick="verifyApplication('${app._id}')">
+              ✓ Verify
+            </button>
+          `;
+        }
+
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${app.name}</td>
+          <td style="word-break: break-word;">${app.email}</td>
+          <td>${app.phone}</td>
+          <td>${app.bloodGroup}</td>
+          <td>${app.ngoId}</td>
+          <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+          <td>
+            ${actionButtons}
+            <button class="action-btn delete-btn" onclick="deleteApplication('${app._id}')">
+              🗑️ Delete
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function verifyApplication(id) {
+      if (!confirm('Verify this application?')) return;
+
+      const dashboardSuccess = document.getElementById('dashboardSuccess');
+      const dashboardError = document.getElementById('dashboardError');
+
+      dashboardSuccess.style.display = 'none';
+      dashboardError.style.display = 'none';
+
+      try {
+        const token = sessionStorage.getItem("ngo_admin_token");
+        const response = await fetch(`${API_URL}/admin/application/${id}/verify`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Verification failed');
+        }
+
+        dashboardSuccess.textContent = 'Application verified successfully!';
+        dashboardSuccess.style.display = 'block';
+        
+        setTimeout(() => {
+          dashboardSuccess.style.display = 'none';
+          loadApplications();
+        }, 2000);
+
+      } catch (error) {
+        dashboardError.textContent = error.message;
+        dashboardError.style.display = 'block';
+      }
+    }
+
+    async function rejectApplication(id) {
+      if (!confirm('Reject this application?')) return;
+
+      const dashboardSuccess = document.getElementById('dashboardSuccess');
+      const dashboardError = document.getElementById('dashboardError');
+
+      dashboardSuccess.style.display = 'none';
+      dashboardError.style.display = 'none';
+
+      try {
+        const token = sessionStorage.getItem("ngo_admin_token");
+        const response = await fetch(`${API_URL}/admin/application/${id}/reject`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Rejection failed');
+        }
+
+        dashboardSuccess.textContent = 'Application rejected';
+        dashboardSuccess.style.display = 'block';
+        
+        setTimeout(() => {
+          dashboardSuccess.style.display = 'none';
+          loadApplications();
+        }, 2000);
+
+      } catch (error) {
+        dashboardError.textContent = error.message;
+        dashboardError.style.display = 'block';
+      }
+    }
+
     async function downloadImage(applicationId, ngoId) {
       const downloadBtn = document.getElementById(`download-${applicationId}`);
       const originalText = downloadBtn.innerHTML;
@@ -423,7 +644,6 @@
         downloadBtn.disabled = true;
         downloadBtn.innerHTML = '⏳ Loading...';
 
-        // Get image URL from backend
         const response = await fetch(`${API_URL}/download/${applicationId}`);
 
         if (!response.ok) {
@@ -433,11 +653,9 @@
 
         const data = await response.json();
 
-        // Download image directly from Cloudinary
         const imageResponse = await fetch(data.imageUrl);
         const blob = await imageResponse.blob();
 
-        // Create download link
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -445,11 +663,9 @@
         document.body.appendChild(link);
         link.click();
 
-        // Cleanup
         window.URL.revokeObjectURL(url);
         document.body.removeChild(link);
 
-        // Show success
         const dashboardSuccess = document.getElementById('dashboardSuccess');
         dashboardSuccess.textContent = 'ID card downloaded successfully!';
         dashboardSuccess.style.display = 'block';
@@ -478,9 +694,7 @@
       const dashboardError = document.getElementById('dashboardError');
 
       dashboardSuccess.style.display = 'none';
-      dashboardSuccess.textContent = '';
       dashboardError.style.display = 'none';
-      dashboardError.textContent = '';
 
       try {
         const token = sessionStorage.getItem("ngo_admin_token");
@@ -511,14 +725,12 @@
       }
     }
 
-    // Auto login if session exists
     if (sessionStorage.getItem("ngo_admin_token")) {
       document.getElementById('loginBox').style.display = "none";
       document.getElementById('dashboard').style.display = "block";
       loadApplications();
     }
 
-    // Allow Enter key to submit login
     document.getElementById('adminPassword').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         adminLogin();

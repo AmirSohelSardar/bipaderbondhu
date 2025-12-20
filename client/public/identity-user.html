@@ -186,12 +186,37 @@
 
     .success-icon {
       font-size: 60px;
-      color: #10b981;
       margin-bottom: 15px;
     }
 
     .success-card h2 {
-      color: #10b981;
+      margin-bottom: 10px;
+    }
+
+    .status-box {
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f3f4f6;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-verified {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-rejected {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-icon {
+      font-size: 40px;
       margin-bottom: 10px;
     }
 
@@ -422,16 +447,22 @@
     <!-- SUCCESS CARD -->
     <div class="card-container" id="cardContainer">
       <div class="success-card">
-        <div class="success-icon">✅</div>
+        <div class="success-icon" id="mainIcon">✅</div>
         <h2 id="successTitle">Application Submitted Successfully!</h2>
-        <p style="margin: 10px 0; color: #666;">Your NGO Identity Card has been generated</p>
+        <p style="margin: 10px 0; color: #666;" id="successSubtitle">Your NGO Identity Card has been generated</p>
         
+        <div class="status-box" id="statusBox">
+          <div class="status-icon" id="statusIcon">⏳</div>
+          <h3 id="statusTitle">Status: Pending</h3>
+          <p id="statusMessage">Your application is pending admin verification. Please check back later.</p>
+        </div>
+
         <div style="margin: 20px 0; padding: 15px; background: #f3f4f6; border-radius: 10px;">
           <p style="font-size: 14px; color: #666; margin-bottom: 5px;">Your Unique ID</p>
           <h3 style="color: #1e40af; font-size: 22px;" id="displayNgoId"></h3>
         </div>
 
-        <button class="download-btn" id="downloadBtn">📥 Download ID Card</button>
+        <button class="download-btn" id="downloadBtn" style="display: none;">📥 Download ID Card</button>
 
         <div style="margin-top: 20px;">
           <button class="back-btn" onclick="showButtons()">← Apply Another / Check Status</button>
@@ -489,6 +520,46 @@
       hideCheckMessages();
     }
 
+    function displayStatus(status) {
+      const statusBox = document.getElementById('statusBox');
+      const statusIcon = document.getElementById('statusIcon');
+      const statusTitle = document.getElementById('statusTitle');
+      const statusMessage = document.getElementById('statusMessage');
+      const mainIcon = document.getElementById('mainIcon');
+      const successTitle = document.getElementById('successTitle');
+      const successSubtitle = document.getElementById('successSubtitle');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      statusBox.className = 'status-box';
+      statusBox.classList.add(`status-${status}`);
+
+      if (status === 'pending') {
+        mainIcon.textContent = '⏳';
+        successTitle.textContent = 'Application Submitted!';
+        successSubtitle.textContent = 'Waiting for admin verification';
+        statusIcon.textContent = '⏳';
+        statusTitle.textContent = 'Status: Pending';
+        statusMessage.textContent = 'Your application is under review. Please check back later.';
+        downloadBtn.style.display = 'none';
+      } else if (status === 'verified') {
+        mainIcon.textContent = '✅';
+        successTitle.textContent = 'Application Verified!';
+        successSubtitle.textContent = 'Your ID card is ready';
+        statusIcon.textContent = '✅';
+        statusTitle.textContent = 'Status: Verified';
+        statusMessage.textContent = 'Your application has been verified. You can now download your ID card!';
+        downloadBtn.style.display = 'block';
+      } else if (status === 'rejected') {
+        mainIcon.textContent = '❌';
+        successTitle.textContent = 'Application Rejected';
+        successSubtitle.textContent = 'Your application was not approved';
+        statusIcon.textContent = '❌';
+        statusTitle.textContent = 'Status: Rejected';
+        statusMessage.textContent = 'Your application was rejected. Please contact admin for more information.';
+        downloadBtn.style.display = 'none';
+      }
+    }
+
     async function checkApplication() {
       const email = document.getElementById('checkEmail').value.trim();
       
@@ -515,12 +586,11 @@
           return;
         }
 
-        // Show success card
         applicationId = data.application._id;
         ngoId = data.application.ngoId;
         
         document.getElementById('displayNgoId').textContent = ngoId;
-        document.getElementById('successTitle').textContent = 'Application Found!';
+        displayStatus(data.application.status);
         
         checkContainer.classList.remove('active');
         cardContainer.classList.add('active');
@@ -590,17 +660,11 @@
           throw new Error(data.message || 'Application failed');
         }
 
-        // Success
         applicationId = data.application._id;
         ngoId = data.ngoId;
 
-        if (data.alreadyExists) {
-          document.getElementById('successTitle').textContent = 'Application Already Exists!';
-        } else {
-          document.getElementById('successTitle').textContent = 'Application Submitted Successfully!';
-        }
-
         document.getElementById('displayNgoId').textContent = ngoId;
+        displayStatus(data.status);
 
         formContainer.classList.remove('active');
         cardContainer.classList.add('active');
@@ -613,9 +677,6 @@
       }
     };
 
-    /**
-     * ✅ FIXED: Download ID Card Image (Direct from Cloudinary)
-     */
     downloadBtn.onclick = async () => {
       if (!applicationId) {
         alert("Application ID not available");
@@ -628,7 +689,6 @@
         downloadBtn.disabled = true;
         downloadBtn.innerHTML = '⏳ Downloading...';
 
-        // Get image URL from backend
         const response = await fetch(`${API_URL}/download/${applicationId}`);
 
         if (!response.ok) {
@@ -638,11 +698,9 @@
 
         const data = await response.json();
 
-        // Download image directly from Cloudinary
         const imageResponse = await fetch(data.imageUrl);
         const blob = await imageResponse.blob();
 
-        // Create download link
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -650,7 +708,6 @@
         document.body.appendChild(link);
         link.click();
 
-        // Cleanup
         window.URL.revokeObjectURL(url);
         document.body.removeChild(link);
 
