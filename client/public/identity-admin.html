@@ -336,8 +336,13 @@
     <div class="dashboard" id="dashboard">
       <div class="dashboard-header">
         <h2>Applications (<span id="appCount">0</span>)</h2>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-      </div>
+  <div style="display: flex; gap: 10px;">
+    <button class="action-btn verify-btn" onclick="fixOldData()" style="padding: 8px 15px; font-size: 14px;">
+      🔧 Fix Old Data
+    </button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</div>
 
       <div class="filter-tabs">
         <div class="filter-tab active" onclick="filterApplications('all')">
@@ -736,6 +741,45 @@
         adminLogin();
       }
     });
+
+
+    async function fixOldData() {
+  if (!confirm('This will update old "approved" status to "verified". Continue?')) return;
+
+  const dashboardSuccess = document.getElementById('dashboardSuccess');
+  const dashboardError = document.getElementById('dashboardError');
+
+  dashboardSuccess.style.display = 'none';
+  dashboardError.style.display = 'none';
+
+  try {
+    const token = sessionStorage.getItem("ngo_admin_token");
+    const response = await fetch(`${API_URL}/admin/fix-old-data`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Fix failed');
+    }
+
+    dashboardSuccess.textContent = `✅ Fixed ${data.modifiedCount} old records!`;
+    dashboardSuccess.style.display = 'block';
+    
+    setTimeout(() => {
+      dashboardSuccess.style.display = 'none';
+      loadApplications();
+    }, 2000);
+
+  } catch (error) {
+    dashboardError.textContent = error.message;
+    dashboardError.style.display = 'block';
+  }
+}
   </script>
 
 </body>
