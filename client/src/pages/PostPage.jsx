@@ -13,42 +13,36 @@ export default function PostPage() {
   const [post, setPost] = useState(null);
   const [recentPosts, setRecentPosts] = useState(null);
   const [showImage, setShowImage] = useState(false);
+useEffect(() => {
+  const fetchPost = async () => {
+    try {
+      setLoading(true);
+      setError(false);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        setError(false);
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/post/post/${postSlug}`
+      );
 
-        const res = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/post/getposts?slug=${postSlug}`
-        );
-        const data = await res.json();
+      const data = await res.json();
 
-        if (!res.ok) {
-          setError(true);
-          setLoading(false);
-          return;
-        }
-
-        if (res.ok && data.posts && data.posts.length > 0) {
-          setPost(data.posts[0]);
-          setLoading(false);
-          setError(false);
-        } else {
-          setError(true);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error('Error fetching post:', error);
+      if (!res.ok || !data) {
         setError(true);
         setLoading(false);
+        return;
       }
-    };
-    fetchPost();
-  }, [postSlug]);
+
+      setPost(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching post:', error);
+      setError(true);
+      setLoading(false);
+    }
+  };
+
+  fetchPost();
+}, [postSlug]);
+
 
   useEffect(() => {
     const fetchRecentPosts = async () => {
@@ -113,21 +107,26 @@ export default function PostPage() {
             'https://via.placeholder.com/800x600?text=Image+Not+Available';
         }}
       />
-      <div className='flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs'>
-        <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
-        <span className='italic'>
-          {post && (post.content.length / 1000).toFixed(0)} mins read
-        </span>
-      </div>
-     <div
-  className='p-3 max-w-2xl mx-auto w-full max-h-[600px] overflow-y-auto break-words post-content'
-  dangerouslySetInnerHTML={{ 
-    __html: post && DOMPurify.sanitize(post.content) 
-  }}
-></div>
-      <div className='max-w-4xl mx-auto w-full'>
-        <CallToAction />
-      </div>
+     <div className='flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs'>
+  <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
+  <span className='italic'>
+    {post?.content ? Math.ceil(post.content.length / 1000) : 0} mins read
+  </span>
+</div>
+
+{post?.content && (
+  <div
+    className='p-3 max-w-2xl mx-auto w-full max-h-[600px] overflow-y-auto break-words post-content'
+    dangerouslySetInnerHTML={{
+      __html: DOMPurify.sanitize(post.content),
+    }}
+  />
+)}
+
+<div className='max-w-4xl mx-auto w-full'>
+  <CallToAction />
+</div>
+
       <CommentSection postId={post._id} />
 
       <div className='flex flex-col justify-center items-center mb-5'>
