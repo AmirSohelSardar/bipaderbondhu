@@ -31,14 +31,12 @@ export default function Home() {
     const fetchPosts = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/post/getposts`,
-          { 
-            signal: AbortSignal.timeout(5000)
-          }
-        );
+  `${import.meta.env.VITE_BACKEND_URL}/api/post/home`
+);
+
         if (res.ok) {
           const data = await res.json();
-          setPosts(data.posts || []);
+          setPosts(data || []);
         }
       } catch (error) {
         console.error('Failed to fetch posts:', error);
