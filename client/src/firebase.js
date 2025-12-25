@@ -22,6 +22,8 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth'; // ✅ REQUIRED
+
 
 // ✅ SECURITY FIX: Use environment variables instead of hardcoded values
 // This way, credentials aren't exposed in the source code
@@ -60,3 +62,5 @@ export const app = initializeApp(firebaseConfig);
 // ✅ Export auth instance for use in components
 // import { getAuth } from 'firebase/auth';
 // export const auth = getAuth(app);
+
+export const auth = getAuth(app);
