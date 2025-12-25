@@ -1,4 +1,6 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
+
+
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +9,8 @@ import { signoutSuccess } from '../redux/user/userSlice';
 import { useEffect, useState } from 'react';
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const path = useLocation().pathname;
   const location = useLocation();
@@ -101,7 +105,8 @@ export default function Header() {
         >
           🔍
         </Button>
-<div className='flex gap-2 md:order-2'>
+<div className="flex items-center gap-1 md:order-2">
+  
   {/* THEME TOGGLE - DISABLED */}
   {/* <Button
     className='w-12 h-10'
@@ -130,6 +135,7 @@ export default function Header() {
                 />
               }
             >
+              
               <Dropdown.Header>
                 <span className='block text-sm'>@{currentUser.username}</span>
                 <span className='block text-sm font-medium truncate'>
@@ -149,14 +155,39 @@ export default function Header() {
               </Button>
             </Link>
           )}
+<button
+  onClick={() => setMenuOpen(!menuOpen)}
+  className="md:hidden relative w-9 h-9 flex items-center justify-center"
+>
 
-          <Navbar.Toggle />
+  <span
+    className={`absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${
+      menuOpen ? 'rotate-45 top-3' : 'top-1'
+    }`}
+  />
+  <span
+    className={`absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${
+      menuOpen ? 'opacity-0' : 'top-3'
+    }`}
+  />
+  <span
+    className={`absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${
+      menuOpen ? '-rotate-45 top-3' : 'top-5'
+    }`}
+  />
+</button>
+
+          
+
+          
         </div>
 
         {/* NAV LINKS */}
-        <Navbar.Collapse>
+        <Navbar.Collapse className={`${menuOpen ? 'block' : 'hidden'} md:block`}>
+
           <Navbar.Link active={path === '/'} as='div'>
-            <Link to='/'>Home</Link>
+            <Link to='/' onClick={() => setMenuOpen(false)}>Home</Link>
+
           </Navbar.Link>
           <Navbar.Link active={path === '/about'} as='div'>
             <Link to='/about'>About</Link>
