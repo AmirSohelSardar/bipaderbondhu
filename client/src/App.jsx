@@ -16,10 +16,18 @@ import ScrollToTop from './components/ScrollToTop';
 import Search from './pages/Search';
 import Contact from './pages/Contact';
 import Donate from './pages/Donate';
+import { useEffect } from 'react';
+
 
 
 
 export default function App() {
+  useEffect(() => {
+  fetch(`${import.meta.env.VITE_BACKEND_URL}/api/visitor`, {
+    method: 'POST',
+  }).catch(() => {});
+}, []);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
