@@ -5,9 +5,12 @@ import PostCard from '../components/PostCard';
 import SkeletonPostCard from '../components/SkeletonPostCard';
 
 
+
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
 const [postsLoading, setPostsLoading] = useState(true);
+const [postsError, setPostsError] = useState(false);
 
   const [showIdModal, setShowIdModal] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -36,17 +39,22 @@ const [postsLoading, setPostsLoading] = useState(true);
   const fetchPosts = async () => {
     try {
       setPostsLoading(true);
+       setPostsError(false);
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/post/home`
       );
 
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data || []);
-      }
+      if (!res.ok) throw new Error('Fetch failed');
+
+const data = await res.json();
+setPosts(data || []);
+
     } catch (error) {
-      console.error('Failed to fetch posts:', error);
+  console.error('Failed to fetch posts:', error);
+  setPostsError(true);
+
+
     } finally {
       setPostsLoading(false);
     }
@@ -278,15 +286,28 @@ const [postsLoading, setPostsLoading] = useState(true);
          <div className="flex flex-col gap-6">
   <h2 className="text-2xl font-semibold text-center">Recent Posts</h2>
 
-  <div className="flex flex-wrap gap-3 justify-center">
-    {postsLoading
-      ? Array(3)
-          .fill(0)
-          .map((_, i) => <SkeletonPostCard key={i} />)
-      : posts.map((post) => (
-          <PostCard key={post._id} post={post} />
-        ))}
-  </div>
+ <div className="flex flex-wrap gap-3 justify-center">
+  {/* Loading */}
+  {postsLoading &&
+    Array(3)
+      .fill(0)
+      .map((_, i) => <SkeletonPostCard key={i} />)}
+
+  {/* Error */}
+  {!postsLoading && postsError && (
+    <p className="text-red-500 text-sm text-center">
+      Failed to load posts. Please refresh the page.
+    </p>
+  )}
+
+  {/* Success */}
+  {!postsLoading &&
+    !postsError &&
+    posts.map((post) => (
+      <PostCard key={post._id} post={post} />
+    ))}
+</div>
+
 
   {!postsLoading && posts.length > 0 && (
     <Link
