@@ -2,9 +2,13 @@ import { Link } from 'react-router-dom';
 import CallToAction from '../components/CallToAction';
 import { useEffect, useState, useRef } from 'react';
 import PostCard from '../components/PostCard';
+import SkeletonPostCard from '../components/SkeletonPostCard';
+
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
+const [postsLoading, setPostsLoading] = useState(true);
+
   const [showIdModal, setShowIdModal] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const scrollRef = useRef(null);
@@ -26,23 +30,30 @@ export default function Home() {
   // Double the array for seamless infinite scroll
   const duplicatedPhotos = [...memberPhotos, ...memberPhotos];
 
-  useEffect(() => {
+  
     // Fetch posts with error handling
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch(
-  `${import.meta.env.VITE_BACKEND_URL}/api/post/home`
-);
+ useEffect(() => {
+  const fetchPosts = async () => {
+    try {
+      setPostsLoading(true);
 
-        if (res.ok) {
-          const data = await res.json();
-          setPosts(data || []);
-        }
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/post/home`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        setPosts(data || []);
       }
-    };
-    fetchPosts();
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
+    } finally {
+      setPostsLoading(false);
+    }
+  };
+
+  fetchPosts(); // ✅ THIS LINE WAS MISSING
+
 
     // Preload images
     let loadedCount = 0;
@@ -263,22 +274,31 @@ export default function Home() {
       </div>
 
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-3">
-        {posts && posts.length > 0 && (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-semibold text-center">Recent Posts</h2>
-            <div className="flex flex-wrap gap-3">
-              {posts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
-            </div>
-            <Link
-              to="/search"
-              className="text-lg text-teal-500 hover:underline text-center"
-            >
-              View all posts
-            </Link>
-          </div>
-        )}
+        
+         <div className="flex flex-col gap-6">
+  <h2 className="text-2xl font-semibold text-center">Recent Posts</h2>
+
+  <div className="flex flex-wrap gap-3 justify-center">
+    {postsLoading
+      ? Array(3)
+          .fill(0)
+          .map((_, i) => <SkeletonPostCard key={i} />)
+      : posts.map((post) => (
+          <PostCard key={post._id} post={post} />
+        ))}
+  </div>
+
+  {!postsLoading && posts.length > 0 && (
+    <Link
+      to="/search"
+      className="text-lg text-teal-500 hover:underline text-center"
+    >
+      View all posts
+    </Link>
+  )}
+</div>
+
+        
       </div>
     </div>
   );
