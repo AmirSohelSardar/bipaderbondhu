@@ -289,7 +289,7 @@ setPosts(data || []);
  <div className="flex flex-wrap gap-3 justify-center">
   {/* Loading */}
   {postsLoading &&
-    Array(3)
+    Array(6)
       .fill(0)
       .map((_, i) => <SkeletonPostCard key={i} />)}
 
