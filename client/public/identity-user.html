@@ -390,7 +390,7 @@
 
         <div class="form-group">
           <label>Address *</label>
-          <input type="text" id="address" maxlength="120" required />
+          <input type="text" id="address" maxlength="45" required />
 
         </div>
 
@@ -640,7 +640,7 @@
 
       const formData = {
         name: document.getElementById('name').value.trim(),
-       address: document.getElementById('address').value.trim().slice(0, 120),
+       address: document.getElementById('address').value.trim().slice(0, 45),
 
         phone: document.getElementById('phone').value.trim(),
         email: document.getElementById('email').value.trim(),
