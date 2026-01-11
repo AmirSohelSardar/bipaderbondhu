@@ -53,6 +53,7 @@ useEffect(() => {
               <li><a href="/search" className="hover:text-white transition">Updates</a></li>
               <li><a href="/contact" className="hover:text-white transition">Contact</a></li>
               <li><a href="/donate" className="hover:text-white transition">Donate</a></li>
+              <li><a href="/meet-our-team" className="hover:text-white transition">Meet Our Team</a></li>
             </ul>
           </div>
 

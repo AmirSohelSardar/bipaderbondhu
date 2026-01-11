@@ -17,6 +17,7 @@ import Search from './pages/Search';
 import Contact from './pages/Contact';
 import Donate from './pages/Donate';
 import { useEffect } from 'react';
+import MeetOurTeam from './pages/MeetOurTeam';
 
 
 
@@ -41,6 +42,8 @@ export default function App() {
           <Route path='/sign-in' element={<SignIn />} />
           <Route path="/contact" element={<Contact />} />
           <Route path='/donate' element={<Donate />} />
+          <Route path="/meet-our-team" element={<MeetOurTeam />} />
+
 
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/search' element={<Search />} />
