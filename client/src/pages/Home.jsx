@@ -42,8 +42,7 @@ const [postsError, setPostsError] = useState(false);
        setPostsError(false);
 
       const res = await fetch(
-        '/api/post/home'
-
+        `${import.meta.env.VITE_BACKEND_URL}/api/post/home`
       );
 
       if (!res.ok) throw new Error('Fetch failed');
