@@ -64,37 +64,16 @@ export default function Header() {
       {/* NAVBAR */}
       <Navbar className='border-b-2 fixed top-0 w-full z-50 bg-white dark:bg-slate-900'>
         {/* LOGO */}
-        {/* <Link
-          to='/'
-          className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'
-        >
-          <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>
-            Bipader
-          </span>
-          Bondhu
-        </Link> */}
-
         <Link
   to="/"
-  className="flex items-center gap-3 group"
+  className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
 >
-  {/* Symbol */}
-  <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-900 dark:bg-white transition">
-    <span className="text-white dark:text-slate-900 text-lg font-extrabold tracking-tight">
-      BB
-    </span>
-  </div>
-
-  {/* Brand Text */}
-  <div className="leading-tight">
-    <p className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white tracking-wide">
-      Bipader Bondhu
-    </p>
-    <p className="text-xs text-slate-500 tracking-[0.2em] uppercase">
-      Welfare Platform
-    </p>
-  </div>
+  <span className="px-2 py-1 bg-slate-900 dark:bg-white rounded-md text-white dark:text-slate-900">
+    Bipader
+  </span>
+  Bondhu
 </Link>
+
 
 
         {/* DESKTOP SEARCH */}
