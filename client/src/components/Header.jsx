@@ -64,7 +64,7 @@ export default function Header() {
       {/* NAVBAR */}
       <Navbar className='border-b-2 fixed top-0 w-full z-50 bg-white dark:bg-slate-900'>
         {/* LOGO */}
-        <Link
+        {/* <Link
           to='/'
           className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'
         >
@@ -72,7 +72,30 @@ export default function Header() {
             Bipader
           </span>
           Bondhu
-        </Link>
+        </Link> */}
+
+        <Link
+  to="/"
+  className="flex items-center gap-3 group"
+>
+  {/* Symbol */}
+  <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-900 dark:bg-white transition">
+    <span className="text-white dark:text-slate-900 text-lg font-extrabold tracking-tight">
+      BB
+    </span>
+  </div>
+
+  {/* Brand Text */}
+  <div className="leading-tight">
+    <p className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white tracking-wide">
+      Bipader Bondhu
+    </p>
+    <p className="text-xs text-slate-500 tracking-[0.2em] uppercase">
+      Welfare Platform
+    </p>
+  </div>
+</Link>
+
 
         {/* DESKTOP SEARCH */}
         <form
