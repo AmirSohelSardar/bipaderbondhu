@@ -6,6 +6,8 @@ import CommentSection from '../components/CommentSection';
 import PostCard from '../components/PostCard';
 import { Modal } from 'flowbite-react';
 import DOMPurify from 'dompurify';
+import { apiRequest } from '../utils/api';
+
 export default function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
@@ -19,13 +21,11 @@ useEffect(() => {
       setLoading(true);
       setError(false);
 
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/post/post/${postSlug}`
+      const { response, data } = await apiRequest(
+        `/api/post/post/${postSlug}`
       );
 
-      const data = await res.json();
-
-      if (!res.ok || !data) {
+      if (!response.ok || !data) {
         setError(true);
         setLoading(false);
         return;
@@ -44,22 +44,25 @@ useEffect(() => {
 }, [postSlug]);
 
 
+
   useEffect(() => {
-    const fetchRecentPosts = async () => {
-      try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/post/getposts?limit=3`
-        );
-        const data = await res.json();
-        if (res.ok) {
-          setRecentPosts(data.posts);
-        }
-      } catch (error) {
-        console.error('Error fetching recent posts:', error);
+  const fetchRecentPosts = async () => {
+    try {
+      const { response, data } = await apiRequest(
+        `/api/post/getposts?limit=3`
+      );
+
+      if (response.ok) {
+        setRecentPosts(data.posts);
       }
-    };
-    fetchRecentPosts();
-  }, []);
+    } catch (error) {
+      console.error('Error fetching recent posts:', error);
+    }
+  };
+
+  fetchRecentPosts();
+}, []);
+
 
   if (loading) {
     return (

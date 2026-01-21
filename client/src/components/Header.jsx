@@ -64,15 +64,16 @@ export default function Header() {
       {/* NAVBAR */}
       <Navbar className='border-b-2 fixed top-0 w-full z-50 bg-white dark:bg-slate-900'>
         {/* LOGO */}
-        <Link
+     <Link
   to="/"
-  className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
+  className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold text-slate-800 dark:text-white"
 >
-  <span className="px-2 py-1 bg-slate-900 dark:bg-white rounded-md text-white dark:text-slate-900">
-    Bipader
+  <span className="px-2 py-1 border border-slate-300 rounded text-indigo-600 font-bold mr-1">
+    BB
   </span>
-  Bondhu
+  bipaderbondhu
 </Link>
+
 
 
 
