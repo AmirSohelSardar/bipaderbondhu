@@ -22,15 +22,17 @@ export default function MeetOurTeam() {
       image: "/images/ripan.jpg",
       gradient: "from-sky-500 to-cyan-500",
     },
-    {
-      id: 3,
-      name: "Secret",
-      role: "Technical Department",
-      image: "https://api.dicebear.com/7.x/bottts/svg?seed=anonymous",
-      isSecret: true,
-      gradient: "from-emerald-500 to-teal-500",
-    },
-  ];
+  {
+  id: 3,
+  name: "Amir Sohel Sardar",
+  role: "Technical Department",
+  department: "Technology and Development",
+  description:
+    "Managing digital platforms and ensuring smooth technical operations.",
+  image: "/images/amir.jpg",
+  gradient: "from-emerald-500 to-teal-500",
+}
+];
 
   return (
     <section className="relative py-24 px-6 bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
