@@ -159,26 +159,38 @@ setPosts(data || []);
         </p>
 
         {/* BUTTONS */}
-        <div className="flex justify-center gap-4 mt-4 flex-wrap">
-          <a
-            href="https://drive.google.com/file/d/1EI5mRZY-mGfezAxVz605lU3yC6Al9xfo/preview"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2 text-sm sm:text-base font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition"
-          >
-            View Registration Certificate
-          </a>
+<div className="flex justify-center gap-4 mt-4 flex-wrap">
+  <a
+    href="https://drive.google.com/file/d/1EI5mRZY-mGfezAxVz605lU3yC6Al9xfo/preview"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="px-5 py-2 text-sm sm:text-base font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition"
+  >
+    View Registration Certificate
+  </a>
 
-          <button
-            onClick={() => setShowIdModal(true)}
-            className="relative px-5 py-2 text-sm sm:text-base font-medium text-white bg-green-600 rounded hover:bg-green-700 transition"
-          >
-            Apply Identity Card
-            <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold text-white bg-red-600 rounded-full animate-pulse">
-              NEW
-            </span>
-          </button>
-        </div>
+  {/* NEW DOWNLOAD APP BUTTON */}
+  <a
+    href="https://github.com/AmirSohelSardar/bipader-bondhu/releases/download/v1.0/app-arm64-v8a-release.apk"
+    download
+    className="relative px-6 py-2 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 animate-pulse"
+  >
+    📱 Download Our Official App
+    <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold text-white bg-yellow-500 rounded-full">
+      APK
+    </span>
+  </a>
+
+  <button
+    onClick={() => setShowIdModal(true)}
+    className="relative px-5 py-2 text-sm sm:text-base font-medium text-white bg-green-600 rounded hover:bg-green-700 transition"
+  >
+    Apply Identity Card
+    <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold text-white bg-red-600 rounded-full animate-pulse">
+      NEW
+    </span>
+  </button>
+</div>
 
         {/* MODAL */}
         {showIdModal && (
