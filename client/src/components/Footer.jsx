@@ -95,6 +95,17 @@ useEffect(() => {
                   narayanpurbipaderbondhu@gmail.com
                 </a>
               </p>
+
+              {/* Second Email */}
+  <p className="flex items-center gap-2">
+    <FaEnvelope />
+    <a
+      href="mailto:bipaderbondhuamra2020@gmail.com"
+      className="hover:text-white transition"
+    >
+      bipaderbondhuamra2020@gmail.com
+    </a>
+  </p>
             </div>
 
             {/* Social Icons */}
