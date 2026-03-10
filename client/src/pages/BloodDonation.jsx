@@ -89,10 +89,14 @@ function Certificate({ donor, certRef }) {
       </div>
 
       {/* ── MAIN CONTENT ── */}
-     <div style={{
+    <div style={{
   position:"absolute", inset:"28px 170px 28px 28px",
-  display:"flex", flexDirection:"column", alignItems:"center", zIndex:5,
-  justifyContent:"space-between"
+  display:"flex",
+  flexDirection:"column",
+  alignItems:"center",
+  zIndex:5,
+  justifyContent:"flex-start",
+  gap:8
 }}>
 
         {/* ── NGO header row ── */}
