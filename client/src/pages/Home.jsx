@@ -196,15 +196,32 @@ export default function Home() {
             </span>
           </a>
 
-          <button
-            onClick={() => setShowIdModal(true)}
-            className="relative px-5 py-2 text-sm sm:text-base font-medium text-white bg-green-600 rounded hover:bg-green-700 transition"
-          >
-            Apply Identity Card
-            <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold text-white bg-red-600 rounded-full animate-pulse">
-              NEW
-            </span>
-          </button>
+          {/* IDENTITY CARD + BLOOD DONATION side by side */}
+          <div className="flex gap-3 flex-wrap justify-center">
+            <button
+              onClick={() => setShowIdModal(true)}
+              className="relative px-5 py-2 text-sm sm:text-base font-medium text-white bg-green-600 rounded hover:bg-green-700 transition"
+            >
+              Apply Identity Card
+              <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold text-white bg-red-600 rounded-full animate-pulse">
+                NEW
+              </span>
+            </button>
+
+            <a
+              href="/blood-donation"
+              className="relative px-5 py-2 text-sm sm:text-base font-semibold text-white rounded-lg hover:scale-105 transition-all duration-300 animate-pulse"
+              style={{
+                background: "linear-gradient(135deg,#7f0000,#e53935)",
+                boxShadow: "0 4px 14px rgba(183,28,28,0.5)",
+              }}
+            >
+              🩸 Blood Donation Certificate
+              <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold text-white bg-yellow-500 rounded-full animate-bounce">
+                NEW
+              </span>
+            </a>
+          </div>
         </div>
 
         {/* MODAL */}
