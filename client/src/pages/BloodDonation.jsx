@@ -85,14 +85,15 @@ function Certificate({ donor, certRef }) {
               </svg>
           }
         </div>
-        <div style={{textAlign:"center",fontSize:8,color:"#999",marginTop:3,letterSpacing:1}}>PHOTO</div>
+        <div style={{textAlign:"center",fontSize:8,color:"#999",marginTop:3,letterSpacing:1}}></div>
       </div>
 
       {/* ── MAIN CONTENT ── */}
-      <div style={{
-        position:"absolute", inset:"28px 170px 28px 28px",
-        display:"flex", flexDirection:"column", alignItems:"center", zIndex:5
-      }}>
+     <div style={{
+  position:"absolute", inset:"28px 170px 28px 28px",
+  display:"flex", flexDirection:"column", alignItems:"center", zIndex:5,
+  justifyContent:"space-between"
+}}>
 
         {/* ── NGO header row ── */}
         <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:4,width:"100%",justifyContent:"center"}}>
@@ -223,7 +224,7 @@ function Certificate({ donor, certRef }) {
         <div style={{width:"90%",height:1,background:"linear-gradient(90deg,transparent,#e57373,transparent)",margin:"6px 0 8px"}}/>
 
         {/* ── Signatures ── */}
-<div style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"flex-end",padding:"0 20px"}}>
+<div style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"flex-end",padding:"0 20px",marginTop:"auto"}}>
 
   {/* President */}
   <div style={{textAlign:"center"}}>
@@ -669,7 +670,22 @@ export default function BloodDonation() {
                       <td className="px-4 py-3">
                         <div className="flex gap-1.5">
                           <button onClick={()=>setViewCert(cert)} className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-white" style={{background:"#1565c0"}}>👁 View</button>
-                          <button onClick={()=>{ const a=document.createElement("a"); a.href=cert.certificateUrl; a.download=`cert-${cert.name}.png`; a.target="_blank"; a.click(); }} className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-white" style={{background:"#2e7d32"}}>⬇</button>
+                          <button onClick={async ()=>{
+  try {
+    const res = await fetch(cert.certificateUrl);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `certificate-${cert.name}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch {
+    window.open(cert.certificateUrl, "_blank");
+  }
+}} className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-white" style={{background:"#2e7d32"}}>⬇</button>
                           <button onClick={()=>handleDelete(cert._id)} className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-white" style={{background:"#b71c1c"}}>🗑</button>
                         </div>
                       </td>
@@ -689,7 +705,22 @@ export default function BloodDonation() {
             <div className="px-5 py-3 flex items-center justify-between" style={{background:"linear-gradient(135deg,#b71c1c,#e53935)"}}>
               <span className="text-white font-bold">{viewCert.name}'s Certificate</span>
               <div className="flex gap-2">
-                <button onClick={()=>{ const a=document.createElement("a"); a.href=viewCert.certificateUrl; a.download=`cert-${viewCert.name}.png`; a.target="_blank"; a.click(); }}
+                <button onClick={async ()=>{
+  try {
+    const res = await fetch(viewCert.certificateUrl);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `certificate-${viewCert.name}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch {
+    window.open(viewCert.certificateUrl, "_blank");
+  }
+}}
                   className="px-4 py-1.5 rounded-lg bg-white text-red-700 text-xs font-bold hover:bg-red-50 transition">⬇ Download</button>
                 <button onClick={()=>setViewCert(null)} className="text-white text-xl font-bold opacity-80 hover:opacity-100 ml-1">✕</button>
               </div>
