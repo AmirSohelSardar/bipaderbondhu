@@ -247,22 +247,38 @@ function Certificate({ donor, certRef }) {
     <div style={{fontSize:7,color:"#777",marginTop:1}}>Narayan Pur Bipader Bondhu Welfare Society</div>
   </div>
 
-  {/* Center seal */}
-  <div style={{textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center"}}>
+ {/* Center seal — APPROVED stamp */}
+<div style={{textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center"}}>
+  <div style={{
+    width:80,height:80,borderRadius:"50%",
+    border:"3px solid #b71c1c",
+    outline:"1.5px dashed #e57373",
+    outlineOffset:"3px",
+    display:"flex",flexDirection:"column",
+    alignItems:"center",justifyContent:"center",
+    background:"linear-gradient(135deg,#fff0f0,#fff)",
+    boxShadow:"0 3px 14px rgba(183,28,28,0.25)",
+    transform:"rotate(-15deg)",
+    position:"relative",
+  }}>
     <div style={{
-      width:65,height:65,borderRadius:"50%",
-      border:"2.5px solid #b71c1c",
-      display:"flex",flexDirection:"column",
-      alignItems:"center",justifyContent:"center",
-      background:"linear-gradient(135deg,#fff5f5,#fff)",
-      boxShadow:"0 2px 8px rgba(183,28,28,0.15)"
-    }}>
-      <div style={{fontSize:16}}>🩸</div>
-      <div style={{fontSize:6,color:"#b71c1c",fontWeight:700,letterSpacing:0.5,textAlign:"center",lineHeight:1.3}}>
-        OFFICIAL<br/>SEAL
-      </div>
-    </div>
+      fontSize:7,fontWeight:900,color:"#b71c1c",
+      letterSpacing:2,textTransform:"uppercase",
+      marginBottom:2,opacity:0.7
+    }}>CERTIFIED</div>
+    <div style={{
+      fontSize:13,fontWeight:900,color:"#b71c1c",
+      letterSpacing:1.5,textTransform:"uppercase",
+      fontFamily:"'Times New Roman',serif",
+      textShadow:"0 1px 2px rgba(183,28,28,0.2)",
+      lineHeight:1
+    }}>✓ APPROVED</div>
+    <div style={{
+      fontSize:6,fontWeight:700,color:"#b71c1c",
+      letterSpacing:1,marginTop:2,opacity:0.7
+    }}>2026</div>
   </div>
+</div>
 
   {/* Manager */}
   <div style={{textAlign:"center"}}>
