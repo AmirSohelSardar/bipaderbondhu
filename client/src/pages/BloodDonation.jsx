@@ -92,7 +92,6 @@ function Certificate({ donor, certRef }) {
      <div style={{
   position:"absolute", inset:"28px 170px 28px 28px",
   display:"flex", flexDirection:"column", alignItems:"center", zIndex:5,
-  justifyContent:"space-between"
 }}>
 
         {/* ── NGO header row ── */}
@@ -147,9 +146,10 @@ function Certificate({ donor, certRef }) {
           Blood Donation Certificate
         </h1>
 
-        <p style={{fontSize:12,color:"#888",fontStyle:"italic",margin:"0 0 8px"}}>
-          This certificate is proudly awarded to
-        </p>
+        <p style={{fontSize:12,color:"#888",fontStyle:"italic",margin:"0 0 0"}}>
+  This certificate is proudly awarded to
+</p>
+<div style={{flex:1}}/>
 
         {/* ── Donor name ── */}
         <div style={{
@@ -223,8 +223,9 @@ function Certificate({ donor, certRef }) {
         {/* ── Divider ── */}
         <div style={{width:"90%",height:1,background:"linear-gradient(90deg,transparent,#e57373,transparent)",margin:"6px 0 8px"}}/>
 
-        {/* ── Signatures ── */}
-<div style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"flex-end",padding:"0 20px",marginTop:"auto"}}>
+        <div style={{flex:1}}/>
+{/* ── Signatures ── */}
+<div style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"flex-end",padding:"0 20px"}}>
 
   {/* President */}
   <div style={{textAlign:"center"}}>
