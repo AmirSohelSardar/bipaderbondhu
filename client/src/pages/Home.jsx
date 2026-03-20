@@ -4,6 +4,80 @@ import { useEffect, useState, useRef } from "react";
 import PostCard from "../components/PostCard";
 import SkeletonPostCard from "../components/SkeletonPostCard";
 
+
+function EidCountdown() {
+  const [timeLeft, setTimeLeft] = useState(null);
+  const [isEid, setIsEid] = useState(false);
+
+  useEffect(() => {
+    const eidDate = new Date("2026-03-31T00:00:00");
+
+    const tick = () => {
+      const now = new Date();
+      const diff = eidDate - now;
+
+      if (diff <= 0) {
+        setIsEid(true);
+        return;
+      }
+
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        mins: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        secs: Math.floor((diff % (1000 * 60)) / 1000),
+      });
+    };
+
+    tick();
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  if (isEid) {
+    return (
+      <div className="w-full rounded-2xl p-8 text-center my-4"
+        style={{ background: "linear-gradient(135deg, #1a472a, #2d6a4f, #1a472a)" }}>
+        <div className="text-5xl mb-3 animate-bounce">🌙</div>
+        <h2 className="text-3xl font-semibold text-yellow-400 mb-1">Eid Mubarak!</h2>
+        <p className="text-green-200 text-xl mb-3">عيد مبارك</p>
+        <p className="text-green-100 text-base max-w-sm mx-auto">
+          Wishing you and your family joy, peace, and blessings this Eid ul-Fitr.
+          May Allah accept your prayers. 🌟
+        </p>
+      </div>
+    );
+  }
+
+  if (!timeLeft) return null;
+
+  return (
+    <div className="w-full rounded-2xl p-6 text-center my-4"
+      style={{ background: "linear-gradient(135deg, #1a472a, #2d6a4f, #1a472a)" }}>
+      <div className="text-4xl mb-2" style={{ animation: "float 3s ease-in-out infinite" }}>🌙</div>
+      <h3 className="text-yellow-400 text-xl font-medium mb-1">Eid ul-Fitr 2026</h3>
+      <p className="text-green-300 text-xs mb-4">Countdown to the blessed celebration</p>
+
+      <div className="flex gap-3 justify-center flex-wrap">
+        {[
+          { val: timeLeft.days, label: "Days" },
+          { val: timeLeft.hours, label: "Hours" },
+          { val: timeLeft.mins, label: "Mins" },
+          { val: timeLeft.secs, label: "Secs" },
+        ].map(({ val, label }) => (
+          <div key={label} className="rounded-xl px-4 py-3 min-w-[70px]"
+            style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,215,0,0.3)" }}>
+            <span className="text-yellow-400 text-3xl font-medium block">{val}</span>
+            <span className="text-green-300 text-xs uppercase tracking-widest mt-1 block">{label}</span>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-green-400 text-xs mt-4">🌟 Ramadan Mubarak — Eid is coming!</p>
+    </div>
+  );
+}
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [postsLoading, setPostsLoading] = useState(true);
@@ -305,6 +379,9 @@ export default function Home() {
 
           <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4"></p>
         </div>
+
+       {/* EID UL-FITR COUNTDOWN */}
+        <EidCountdown />
 
         <div className="p-3 bg-amber-100 dark:bg-slate-700 rounded-lg">
           <CallToAction />
