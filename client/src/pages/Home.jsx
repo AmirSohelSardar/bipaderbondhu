@@ -10,7 +10,7 @@ function EidCountdown() {
   const [isEid, setIsEid] = useState(false);
 
   useEffect(() => {
-    const eidDate = new Date("2026-03-31T00:00:00");
+    const eidDate = new Date("2026-03-21T00:00:00");
 
     const tick = () => {
       const now = new Date();
