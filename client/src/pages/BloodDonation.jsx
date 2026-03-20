@@ -44,16 +44,16 @@ function Certificate({ donor, certRef }) {
     }}>
 
       {/* ── Top/bottom bars ── */}
-      <div style={{position:"absolute",top:0,left:0,right:0,height:12,background:"linear-gradient(90deg,#4a0000,#b71c1c,#e53935,#b71c1c,#4a0000)",zIndex:4}}/>
-      <div style={{position:"absolute",bottom:0,left:0,right:0,height:12,background:"linear-gradient(90deg,#4a0000,#b71c1c,#e53935,#b71c1c,#4a0000)",zIndex:4}}/>
+      <div style={{position:"absolute",top:0,left:0,right:0,height:10,background:"linear-gradient(90deg,#4a0000,#b71c1c,#e53935,#b71c1c,#4a0000)",zIndex:4}}/>
+      <div style={{position:"absolute",bottom:0,left:0,right:0,height:10,background:"linear-gradient(90deg,#4a0000,#b71c1c,#e53935,#b71c1c,#4a0000)",zIndex:4}}/>
 
       {/* ── Borders ── */}
-      <div style={{position:"absolute",inset:14,border:"5px double #b71c1c",zIndex:1,pointerEvents:"none"}}/>
-      <div style={{position:"absolute",inset:24,border:"1.5px solid #e57373",zIndex:1,pointerEvents:"none"}}/>
+      <div style={{position:"absolute",inset:22,border:"5px double #b71c1c",zIndex:1,pointerEvents:"none"}}/>
+      <div style={{position:"absolute",inset:32,border:"1.5px solid #e57373",zIndex:1,pointerEvents:"none"}}/>
 
       {/* ── Corner ornaments ── */}
-      {[{top:14,left:14},{top:14,right:14},{bottom:14,left:14},{bottom:14,right:14}].map((s,i)=>(
-        <div key={i} style={{position:"absolute",...s,width:44,height:44,
+      {[{top:22,left:22},{top:22,right:22},{bottom:22,left:22},{bottom:22,right:22}].map((s,i)=>(
+        <div key={i} style={{position:"absolute",...s,width:40,height:40,
           borderTop:(s.top!==undefined)?"4px solid #b71c1c":"none",
           borderBottom:(s.bottom!==undefined)?"4px solid #b71c1c":"none",
           borderLeft:(s.left!==undefined)?"4px solid #b71c1c":"none",
@@ -72,7 +72,7 @@ function Certificate({ donor, certRef }) {
       </div>
 
       {/* ── PHOTO — top right ── */}
-      <div style={{position:"absolute",top:30,right:30,zIndex:6}}>
+      <div style={{position:"absolute",top:36,right:36,zIndex:6}}>
         <div style={{
           width:118,height:142,
           border:"3px solid #b71c1c",
@@ -96,7 +96,7 @@ function Certificate({ donor, certRef }) {
       ══════════════════════════════════════════ */}
       <div style={{
         position:"absolute",
-        top:12, bottom:12, left:28, right:165,
+        top:22, bottom:22, left:36, right:170,
         display:"flex",
         flexDirection:"column",
         alignItems:"center",
@@ -391,7 +391,7 @@ export default function BloodDonation() {
       setDonor({ ...form, photoUrl: photoPreview || null });
       await new Promise(r => setTimeout(r, 700));
 
-      const dataUrl = await toPng(certRef.current, { cacheBust:true, pixelRatio:2 });
+      const dataUrl = await toPng(certRef.current, { cacheBust:true, pixelRatio:3 });
       const certBlob = await (await fetch(dataUrl)).blob();
       const certificateUrl = await uploadCloud(certBlob, "blood-certificates");
 
