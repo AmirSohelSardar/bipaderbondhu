@@ -8,7 +8,7 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const [postsLoading, setPostsLoading] = useState(true);
   const [postsError, setPostsError] = useState(false);
-  const [showDonatePopup, setShowDonatePopup] = useState(false);
+  
 
   const [showIdModal, setShowIdModal] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -139,21 +139,7 @@ export default function Home() {
     };
   }, [imagesLoaded]);
 
-  // DONATION POPUP
-  useEffect(() => {
-    const showTimer = setTimeout(() => {
-      setShowDonatePopup(true);
-    }, 1000);
-
-    const closeTimer = setTimeout(() => {
-      setShowDonatePopup(false);
-    }, 15000);
-
-    return () => {
-      clearTimeout(showTimer);
-      clearTimeout(closeTimer);
-    };
-  }, []);
+  
 
   return (
     <div>
@@ -360,25 +346,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* DONATION POPUP */}
-      {showDonatePopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-          <div className="relative max-w-md w-full">
-            <button
-              onClick={() => setShowDonatePopup(false)}
-              className="absolute -top-3 -right-3 bg-white text-black rounded-full w-8 h-8 shadow-lg hover:bg-red-500 hover:text-white"
-            >
-              ✕
-            </button>
-
-            <img
-              src="/images/donate.png"
-              alt="Donate"
-              className="w-full h-auto rounded-lg shadow-2xl"
-            />
-          </div>
-        </div>
-      )}
+    
     </div>
   );
 }
