@@ -17,7 +17,10 @@ export default function Footer() {
 useEffect(() => {
   fetch(`${import.meta.env.VITE_BACKEND_URL}/api/visitor`)
     .then(res => res.json())
-    .then(data => setStats(data))
+    .then(data => setStats({
+  totalVisits: data?.totalVisits ?? 0,
+  uniqueVisitors: data?.uniqueVisitors ?? 0,
+}))
     .catch(() => {});
 }, []);
 
