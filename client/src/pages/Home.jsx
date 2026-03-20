@@ -225,6 +225,14 @@ export default function Home() {
           Govt. Registered NGO • Reg. No: S0042589 of 2024–2025
         </p>
 
+        <p className="text-xs text-gray-500 flex items-start gap-1">
+          <span>📍</span>
+          <span>
+            Vill- Narayan Pur, P.O- Amiya Narayan Pur, P.S- Thanar Para,
+            Dist- Nadia, Pin- 741165, West Bengal, India
+          </span>
+        </p>
+
         <p className="text-gray-500 text-xs sm:text-sm">
           Welcome to Narayan Pur Bipader Bondhu Welfare Society. We are a
           non-profit organization dedicated to serving humanity through social
