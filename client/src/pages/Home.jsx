@@ -275,27 +275,20 @@ export default function Home() {
                 NEW
               </span>
             </button>
-            <a
-
-           href="/blood-donation"
-  className="relative inline-flex items-center gap-2 px-6 py-2.5 text-sm sm:text-base font-bold text-white rounded-xl hover:scale-105 hover:brightness-110 transition-all duration-300"
+<a
+href="/blood-donation"
+  className="relative inline-flex items-center gap-2 px-6 py-2.5 text-sm sm:text-base font-bold text-white rounded-xl hover:scale-105 transition-all duration-300"
   style={{
-  background: "linear-gradient(135deg,#7f0000,#e53935)",
-  boxShadow: "0 4px 14px rgba(183,28,28,0.5)",
-}}
+    background: "linear-gradient(135deg,#7f0000,#e53935)",
+    boxShadow: "0 4px 14px rgba(183,28,28,0.5)",
+  }}
 >
- 
-
-  style={{background:"linear-gradient(135deg,#f59e0b,#fbbf24)"}}
+  <span style={{fontSize:18}}>🩸</span>
   <span className="tracking-wide">NGO Event & Certification Hub</span>
-
-  {/* NEW badge */}
   <span className="absolute -top-2.5 -right-2.5 px-2 py-0.5 text-[10px] font-black text-white rounded-full"
-    style={{background:"linear-gradient(135deg,#f59e0b,#fbbf24)", boxShadow:"0 2px 8px rgba(245,158,11,0.6)", animation:"badgeBounce 1s ease-in-out infinite"}}>
+    style={{background:"linear-gradient(135deg,#f59e0b,#fbbf24)"}}>
     NEW
   </span>
-
-
 </a>
           </div>
         </div>
