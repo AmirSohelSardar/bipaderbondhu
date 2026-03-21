@@ -20,6 +20,8 @@ import { useEffect } from 'react';
 import MeetOurTeam from './pages/MeetOurTeam';
 import BloodDonation from './pages/BloodDonation';
 
+import WhatsAppInvitation from "./pages/WhatsAppInvitation";
+
 
 
 
@@ -45,6 +47,7 @@ export default function App() {
           <Route path='/donate' element={<Donate />} />
           <Route path="/meet-our-team" element={<MeetOurTeam />} />
           <Route path="/blood-donation" element={<BloodDonation />} />
+          <Route path="/whatsapp-invitation" element={<WhatsAppInvitation />} />
 
 
           <Route path='/sign-up' element={<SignUp />} />

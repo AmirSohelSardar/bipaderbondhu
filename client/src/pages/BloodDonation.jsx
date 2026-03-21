@@ -1,6 +1,7 @@
 // client/src/pages/BloodDonation.jsx
 import { useState, useEffect, useRef } from "react";
 import { toPng } from "html-to-image";
+import { useNavigate } from "react-router-dom";
 
 const ADMIN_EMAIL   = "narayanpurbipaderbondhu@gmail.com";
 const ADMIN_PASS    = "Kada@#2000";
@@ -319,6 +320,7 @@ function Certificate({ donor, certRef }) {
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function BloodDonation() {
+  const navigate = useNavigate();
   const [view, setView]             = useState("public");
   const [loginData, setLogin]       = useState({ email:"", password:"" });
   const [loginErr, setLoginErr]     = useState("");
@@ -600,10 +602,17 @@ export default function BloodDonation() {
             <div className="text-red-200 text-xs hidden sm:block">Narayan Pur Bipader Bondhu Welfare Society</div>
           </div>
         </div>
-        <div className="flex gap-2">
-          <button onClick={()=>setView("form")} className="px-4 py-2 rounded-lg bg-white text-red-700 text-sm font-bold hover:bg-red-50 transition">+ New Certificate</button>
-          <button onClick={handleLogout} className="px-4 py-2 rounded-lg text-white text-sm font-semibold hover:bg-white hover:bg-opacity-20 transition">Logout</button>
-        </div>
+        <div className="flex gap-2 flex-wrap justify-end">
+  <button
+    onClick={() => navigate("/whatsapp-invitation")}
+    className="px-4 py-2 rounded-lg text-sm font-bold hover:scale-105 transition-all"
+    style={{ background:"linear-gradient(135deg,#c8a45a,#f5d87a)", color:"#0a0f1e", boxShadow:"0 3px 10px rgba(200,164,90,0.4)" }}
+  >
+    💌 Send Invite
+  </button>
+  <button onClick={()=>setView("form")} className="px-4 py-2 rounded-lg bg-white text-red-700 text-sm font-bold hover:bg-red-50 transition">+ New Certificate</button>
+  <button onClick={handleLogout} className="px-4 py-2 rounded-lg text-white text-sm font-semibold hover:bg-white hover:bg-opacity-20 transition">Logout</button>
+</div>
       </nav>
 
       <div className="max-w-7xl mx-auto p-4 md:p-6">
