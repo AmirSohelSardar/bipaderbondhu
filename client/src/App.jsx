@@ -23,8 +23,6 @@ import BloodDonation from './pages/BloodDonation';
 
 
 
-
-
 export default function App() {
   useEffect(() => {
   fetch(`${import.meta.env.VITE_BACKEND_URL}/api/visitor`, {
@@ -47,7 +45,6 @@ export default function App() {
           <Route path='/donate' element={<Donate />} />
           <Route path="/meet-our-team" element={<MeetOurTeam />} />
           <Route path="/blood-donation" element={<BloodDonation />} />
-          
 
 
           <Route path='/sign-up' element={<SignUp />} />
