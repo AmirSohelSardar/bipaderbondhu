@@ -275,20 +275,61 @@ export default function Home() {
                 NEW
               </span>
             </button>
-
             <a
-              href="/blood-donation"
-              className="relative px-5 py-2 text-sm sm:text-base font-semibold text-white rounded-lg hover:scale-105 transition-all duration-300 animate-pulse"
-              style={{
-                background: "linear-gradient(135deg,#7f0000,#e53935)",
-                boxShadow: "0 4px 14px rgba(183,28,28,0.5)",
-              }}
-            >
-              🩸 Blood Donation Certificate
-              <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold text-white bg-yellow-500 rounded-full animate-bounce">
-                NEW
-              </span>
-            </a>
+
+           href="/blood-donation"
+  className="relative inline-flex items-center gap-2 px-6 py-2.5 text-sm sm:text-base font-bold text-white rounded-xl hover:scale-105 hover:brightness-110 transition-all duration-300"
+  style={{
+    background: "linear-gradient(135deg,#4a0000,#b71c1c,#e53935,#b71c1c,#4a0000)",
+    backgroundSize: "200% 200%",
+    boxShadow: "0 4px 20px rgba(183,28,28,0.6), 0 0 0 2px rgba(229,57,53,0.3)",
+    animation: "gradientShift 3s ease infinite, glowPulse 2s ease-in-out infinite",
+  }}
+>
+  {/* Shimmer overlay */}
+  <span style={{
+    position:"absolute", inset:0, borderRadius:"inherit", overflow:"hidden",
+    background:"linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.15) 50%,transparent 60%)",
+    animation:"shimmer 2.5s infinite",
+    pointerEvents:"none",
+  }}/>
+
+  <span style={{fontSize:18, filter:"drop-shadow(0 0 6px rgba(255,100,100,0.8))", animation:"heartbeat 1.5s ease-in-out infinite"}}>🩸</span>
+  <span className="tracking-wide">NGO Event & Certification Hub</span>
+
+  {/* NEW badge */}
+  <span className="absolute -top-2.5 -right-2.5 px-2 py-0.5 text-[10px] font-black text-white rounded-full"
+    style={{background:"linear-gradient(135deg,#f59e0b,#fbbf24)", boxShadow:"0 2px 8px rgba(245,158,11,0.6)", animation:"badgeBounce 1s ease-in-out infinite"}}>
+    NEW
+  </span>
+
+  {/* CSS animations */}
+  <style>{`
+    @keyframes gradientShift {
+      0%,100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    @keyframes glowPulse {
+      0%,100% { box-shadow: 0 4px 20px rgba(183,28,28,0.6), 0 0 0 2px rgba(229,57,53,0.3); }
+      50%      { box-shadow: 0 4px 35px rgba(183,28,28,0.9), 0 0 0 4px rgba(229,57,53,0.5); }
+    }
+    @keyframes shimmer {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(200%); }
+    }
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); }
+      14%     { transform: scale(1.2); }
+      28%     { transform: scale(1); }
+      42%     { transform: scale(1.15); }
+      56%     { transform: scale(1); }
+    }
+    @keyframes badgeBounce {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-3px); }
+    }
+  `}</style>
+</a>
           </div>
         </div>
 

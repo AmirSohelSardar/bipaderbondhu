@@ -437,41 +437,246 @@ export default function BloodDonation() {
 
   const inp = "w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition";
 
-  // ── PUBLIC ──────────────────────────────────────────────────────────────────
+// ── PUBLIC ──────────────────────────────────────────────────────────────────
   if (view === "public") return (
-    <div className="relative rounded-2xl overflow-hidden my-8 mx-4"
-      style={{background:"linear-gradient(135deg,#7f0000,#b71c1c,#e53935)",boxShadow:"0 8px 32px rgba(183,28,28,0.35)"}}>
-      <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full opacity-10 bg-white"/>
-      <div className="absolute -bottom-8 -left-8 w-36 h-36 rounded-full opacity-10 bg-white"/>
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 p-8">
-        <div className="text-white text-center md:text-left">
-          <div className="flex items-center gap-3 justify-center md:justify-start mb-2">
-            <svg width="26" height="32" viewBox="0 0 44 56">
-              <path d="M22 2C22 2 2 24 2 38C2 48.493 11.058 56 22 56C32.942 56 42 48.493 42 38C42 24 22 2 22 2Z" fill="rgba(255,255,255,0.9)"/>
-            </svg>
-            <h2 className="text-2xl font-black tracking-wide" style={{fontFamily:"Georgia,serif"}}>Blood Donation Certificate</h2>
+    <div className="min-h-screen py-8 px-4" style={{background:"linear-gradient(160deg,#0a0000,#1a0000,#0a0000)"}}>
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity:0; transform:translateY(24px); }
+          to   { opacity:1; transform:translateY(0); }
+        }
+        @keyframes glowPulse {
+          0%,100% { box-shadow: 0 0 20px rgba(183,28,28,0.4); }
+          50%     { box-shadow: 0 0 40px rgba(183,28,28,0.8); }
+        }
+        @keyframes shimmer {
+          0%   { transform: translateX(-100%); }
+          100% { transform: translateX(200%); }
+        }
+        @keyframes heartbeat {
+          0%,100% { transform:scale(1); }
+          14%     { transform:scale(1.3); }
+          28%     { transform:scale(1); }
+          42%     { transform:scale(1.15); }
+          56%     { transform:scale(1); }
+        }
+        @keyframes float {
+          0%,100% { transform:translateY(0); }
+          50%     { transform:translateY(-8px); }
+        }
+        .feature-card:hover { transform: translateY(-4px); transition: transform 0.3s ease; }
+        .feature-card { transition: transform 0.3s ease; }
+      `}</style>
+
+      <div className="max-w-4xl mx-auto">
+
+        {/* ── HERO HEADER ── */}
+        <div className="text-center mb-10" style={{animation:"fadeUp 0.6s ease-out"}}>
+          {/* Blood drop icon */}
+          <div className="flex justify-center mb-4">
+            <div style={{
+              width:72, height:72, borderRadius:"50%",
+              background:"linear-gradient(135deg,#b71c1c,#e53935)",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              boxShadow:"0 0 30px rgba(183,28,28,0.6)",
+              animation:"glowPulse 2s ease-in-out infinite",
+            }}>
+              <span style={{fontSize:36, animation:"heartbeat 2s ease-in-out infinite"}}>🩸</span>
+            </div>
           </div>
-          <p className="text-red-100 text-sm max-w-xs leading-relaxed">
-            Donate blood, save lives — receive an official certificate from our Govt. registered NGO.
+
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2 tracking-wide"
+            style={{fontFamily:"Georgia,serif", textShadow:"0 0 30px rgba(183,28,28,0.5)"}}>
+            NGO Event & Certification Hub
+          </h1>
+          <p className="text-red-300 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+            Narayan Pur Bipader Bondhu Welfare Society — Govt. Registered NGO
           </p>
+          <div style={{width:80, height:3, background:"linear-gradient(90deg,transparent,#e53935,transparent)", margin:"12px auto 0"}}/>
         </div>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <a
-            href={`https://wa.me/${WA_NUM}?text=Hello%20I%20want%20to%20donate%20blood%20and%20get%20a%20blood%20donation%20certificate%20from%20Narayan%20Pur%20Bipader%20Bondhu%20Welfare%20Society.`}
+
+        {/* ── 3 FEATURE CARDS ── */}
+        <div className="flex flex-col gap-5 mb-8">
+
+          {/* CARD 1 — Blood Certificate */}
+          <div className="feature-card rounded-2xl overflow-hidden"
+            style={{
+              background:"linear-gradient(135deg,rgba(183,28,28,0.15),rgba(183,28,28,0.05))",
+              border:"1.5px solid rgba(183,28,28,0.4)",
+              animation:"fadeUp 0.6s ease-out 0.1s both",
+            }}>
+            <div className="p-5 sm:p-6">
+              {/* Card header */}
+              <div className="flex items-center gap-3 mb-3">
+                <div style={{
+                  width:48, height:48, borderRadius:12, flexShrink:0,
+                  background:"linear-gradient(135deg,#b71c1c,#e53935)",
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  boxShadow:"0 4px 14px rgba(183,28,28,0.4)",
+                }}>
+                  <span style={{fontSize:24}}>🎓</span>
+                </div>
+                <div>
+                  <h2 className="text-white font-black text-lg">Blood Donation Certificate</h2>
+                  <p className="text-red-300 text-xs">Donate blood → Get an official certificate</p>
+                </div>
+                <span className="ml-auto px-2 py-0.5 text-[10px] font-black text-white rounded-full flex-shrink-0"
+                  style={{background:"linear-gradient(135deg,#f59e0b,#fbbf24)"}}>FREE</span>
+              </div>
+
+              {/* How it works steps */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                {[
+                  {step:"1", icon:"🩸", text:"You donate blood at our camp"},
+                  {step:"2", icon:"📋", text:"Admin fills your details in our system"},
+                  {step:"3", icon:"🎓", text:"Certificate generated & sent to you"},
+                ].map(({step, icon, text}) => (
+                  <div key={step} className="flex-1 rounded-xl p-3 text-center"
+                    style={{background:"rgba(183,28,28,0.12)", border:"1px solid rgba(183,28,28,0.2)"}}>
+                    <div className="text-2xl mb-1">{icon}</div>
+                    <div className="text-red-400 text-xs font-bold uppercase tracking-wider mb-1">Step {step}</div>
+                    <div className="text-gray-300 text-xs leading-relaxed">{text}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA button */}
+              
+                href={`https://wa.me/${WA_NUM}?text=Hello%2C%20I%20want%20to%20donate%20blood%20and%20get%20a%20Blood%20Donation%20Certificate%20from%20Narayan%20Pur%20Bipader%20Bondhu%20Welfare%20Society.%20Please%20guide%20me%20about%20the%20next%20blood%20donation%20camp.%20Thank%20you!`}
+                target="_blank" rel="noopener noreferrer"
+                className="relative flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold text-white text-sm overflow-hidden hover:scale-[1.02] transition-all"
+                style={{background:"#25D366", boxShadow:"0 4px 16px rgba(37,211,102,0.4)"}}>
+                <span style={{position:"absolute",inset:0,background:"linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.15) 50%,transparent 60%)",animation:"shimmer 2s infinite",pointerEvents:"none"}}/>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style={{flexShrink:0}}>
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                🔔 Remind Admin — I Want to Donate Blood & Get My Certificate
+              </a>
+            </div>
+          </div>
+
+          {/* CARD 2 — Event Invitation */}
+          <div className="feature-card rounded-2xl overflow-hidden"
+            style={{
+              background:"linear-gradient(135deg,rgba(200,164,90,0.12),rgba(200,164,90,0.04))",
+              border:"1.5px solid rgba(200,164,90,0.35)",
+              animation:"fadeUp 0.6s ease-out 0.2s both",
+            }}>
+            <div className="p-5 sm:p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div style={{
+                  width:48, height:48, borderRadius:12, flexShrink:0,
+                  background:"linear-gradient(135deg,#c8a45a,#f5d87a)",
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  boxShadow:"0 4px 14px rgba(200,164,90,0.4)",
+                }}>
+                  <span style={{fontSize:24}}>💌</span>
+                </div>
+                <div>
+                  <h2 className="text-white font-black text-lg">WhatsApp Event Invitation</h2>
+                  <p className="text-yellow-400 text-xs">Admin sends beautiful invite cards via WhatsApp</p>
+                </div>
+                <span className="ml-auto px-2 py-0.5 text-[10px] font-black rounded-full flex-shrink-0"
+                  style={{background:"linear-gradient(135deg,#c8a45a,#f5d87a)", color:"#0a0f1e"}}>ADMIN</span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                {[
+                  {step:"1", icon:"📝", text:"Admin fills event name, date, venue & recipient"},
+                  {step:"2", icon:"🖼️", text:"Beautiful invitation card auto-generated"},
+                  {step:"3", icon:"📲", text:"Card sent directly to recipient's WhatsApp"},
+                ].map(({step, icon, text}) => (
+                  <div key={step} className="flex-1 rounded-xl p-3 text-center"
+                    style={{background:"rgba(200,164,90,0.08)", border:"1px solid rgba(200,164,90,0.2)"}}>
+                    <div className="text-2xl mb-1">{icon}</div>
+                    <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{color:"#c8a45a"}}>Step {step}</div>
+                    <div className="text-gray-300 text-xs leading-relaxed">{text}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-xl p-3 text-sm text-center"
+                style={{background:"rgba(200,164,90,0.08)", border:"1px solid rgba(200,164,90,0.2)"}}>
+                <span style={{color:"#c8a45a"}}>💡 </span>
+                <span className="text-gray-300 text-xs">Invitation cards are stored in our database and a pre-filled WhatsApp message with the card image is sent directly to the recipient.</span>
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 3 — How Certificate Works (Admin Side) */}
+          <div className="feature-card rounded-2xl overflow-hidden"
+            style={{
+              background:"linear-gradient(135deg,rgba(21,101,192,0.12),rgba(21,101,192,0.04))",
+              border:"1.5px solid rgba(21,101,192,0.35)",
+              animation:"fadeUp 0.6s ease-out 0.3s both",
+            }}>
+            <div className="p-5 sm:p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div style={{
+                  width:48, height:48, borderRadius:12, flexShrink:0,
+                  background:"linear-gradient(135deg,#1565c0,#1976d2)",
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  boxShadow:"0 4px 14px rgba(21,101,192,0.4)",
+                }}>
+                  <span style={{fontSize:24}}>⚙️</span>
+                </div>
+                <div>
+                  <h2 className="text-white font-black text-lg">How Admin Generates Certificates</h2>
+                  <p className="text-blue-300 text-xs">Behind the scenes — how your certificate is made</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                {[
+                  {icon:"🔐", title:"Admin Login", desc:"Admin securely logs into the portal"},
+                  {icon:"📋", title:"Fill Donor Form", desc:"Name, blood group, date, camp name & photo entered"},
+                  {icon:"🎨", title:"Auto Certificate", desc:"System generates a professional certificate instantly"},
+                  {icon:"☁️", title:"Saved & Shared", desc:"Stored in database, downloadable copy for donor to print"},
+                ].map(({icon, title, desc}) => (
+                  <div key={title} className="flex items-start gap-3 rounded-xl p-3"
+                    style={{background:"rgba(21,101,192,0.08)", border:"1px solid rgba(21,101,192,0.2)"}}>
+                    <span style={{fontSize:20, flexShrink:0}}>{icon}</span>
+                    <div>
+                      <div className="text-white font-bold text-xs mb-0.5">{title}</div>
+                      <div className="text-gray-400 text-xs leading-relaxed">{desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* ── BOTTOM BUTTONS ── */}
+        <div className="flex flex-col sm:flex-row gap-3" style={{animation:"fadeUp 0.6s ease-out 0.4s both"}}>
+          
+            href={`https://wa.me/${WA_NUM}?text=Hello%2C%20I%20want%20to%20donate%20blood%20and%20get%20a%20Blood%20Donation%20Certificate%20from%20Narayan%20Pur%20Bipader%20Bondhu%20Welfare%20Society.%20Please%20guide%20me%20about%20the%20next%20blood%20donation%20camp.%20Thank%20you!`}
             target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white text-sm hover:scale-105 transition-all"
-            style={{background:"#25D366",boxShadow:"0 4px 14px rgba(37,211,102,0.4)"}}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+            className="relative flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-white text-sm overflow-hidden hover:scale-[1.02] transition-all"
+            style={{background:"#25D366", boxShadow:"0 4px 20px rgba(37,211,102,0.4)"}}>
+            <span style={{position:"absolute",inset:0,background:"linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.15) 50%,transparent 60%)",animation:"shimmer 2s infinite",pointerEvents:"none"}}/>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style={{flexShrink:0}}>
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
             </svg>
-            Donate Blood &amp; Get Certificate
+            🩸 Donate Blood & Get Certificate
           </a>
+
           <button onClick={() => setView("login")}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white text-sm hover:scale-105 transition-all"
-            style={{background:"rgba(255,255,255,0.15)",border:"1.5px solid rgba(255,255,255,0.4)"}}>
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-white text-sm hover:scale-[1.02] transition-all"
+            style={{
+              background:"linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))",
+              border:"1.5px solid rgba(255,255,255,0.2)",
+            }}>
             🔐 Admin Login
           </button>
         </div>
+
+        {/* Footer note */}
+        <p className="text-center text-gray-600 text-xs mt-6">
+          Narayan Pur Bipader Bondhu Welfare Society • Govt. Registered NGO • Reg. No: S0042589 of 2024–2025
+        </p>
+
       </div>
     </div>
   );
