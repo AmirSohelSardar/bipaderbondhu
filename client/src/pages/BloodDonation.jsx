@@ -541,7 +541,7 @@ export default function BloodDonation() {
               </div>
 
               {/* CTA button */}
-              
+              <a
                 href={`https://wa.me/${WA_NUM}?text=Hello%2C%20I%20want%20to%20donate%20blood%20and%20get%20a%20Blood%20Donation%20Certificate%20from%20Narayan%20Pur%20Bipader%20Bondhu%20Welfare%20Society.%20Please%20guide%20me%20about%20the%20next%20blood%20donation%20camp.%20Thank%20you!`}
                 target="_blank" rel="noopener noreferrer"
                 className="relative flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold text-white text-sm overflow-hidden hover:scale-[1.02] transition-all"
@@ -650,7 +650,7 @@ export default function BloodDonation() {
 
         {/* ── BOTTOM BUTTONS ── */}
         <div className="flex flex-col sm:flex-row gap-3" style={{animation:"fadeUp 0.6s ease-out 0.4s both"}}>
-          
+          <a
             href={`https://wa.me/${WA_NUM}?text=Hello%2C%20I%20want%20to%20donate%20blood%20and%20get%20a%20Blood%20Donation%20Certificate%20from%20Narayan%20Pur%20Bipader%20Bondhu%20Welfare%20Society.%20Please%20guide%20me%20about%20the%20next%20blood%20donation%20camp.%20Thank%20you!`}
             target="_blank" rel="noopener noreferrer"
             className="relative flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-white text-sm overflow-hidden hover:scale-[1.02] transition-all"
