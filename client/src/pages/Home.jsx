@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from "react";
 import PostCard from "../components/PostCard";
 import SkeletonPostCard from "../components/SkeletonPostCard";
 
-
 function EidCountdown() {
   const [timeLeft, setTimeLeft] = useState(null);
   const [isEid, setIsEid] = useState(false);
@@ -36,14 +35,20 @@ function EidCountdown() {
 
   if (isEid) {
     return (
-      <div className="w-full rounded-2xl p-8 text-center my-4"
-        style={{ background: "linear-gradient(135deg, #1a472a, #2d6a4f, #1a472a)" }}>
+      <div
+        className="w-full rounded-2xl p-8 text-center my-4"
+        style={{
+          background: "linear-gradient(135deg, #1a472a, #2d6a4f, #1a472a)",
+        }}
+      >
         <div className="text-5xl mb-3 animate-bounce">🌙</div>
-        <h2 className="text-3xl font-semibold text-yellow-400 mb-1">Eid Mubarak!</h2>
+        <h2 className="text-3xl font-semibold text-yellow-400 mb-1">
+          Eid Mubarak!
+        </h2>
         <p className="text-green-200 text-xl mb-3">عيد مبارك</p>
         <p className="text-green-100 text-base max-w-sm mx-auto">
-          Wishing you and your family joy, peace, and blessings this Eid ul-Fitr.
-          May Allah accept your prayers. 🌟
+          Wishing you and your family joy, peace, and blessings this Eid
+          ul-Fitr. May Allah accept your prayers. 🌟
         </p>
       </div>
     );
@@ -52,11 +57,24 @@ function EidCountdown() {
   if (!timeLeft) return null;
 
   return (
-    <div className="w-full rounded-2xl p-6 text-center my-4"
-      style={{ background: "linear-gradient(135deg, #1a472a, #2d6a4f, #1a472a)" }}>
-      <div className="text-4xl mb-2" style={{ animation: "float 3s ease-in-out infinite" }}>🌙</div>
-      <h3 className="text-yellow-400 text-xl font-medium mb-1">Eid ul-Fitr 2026</h3>
-      <p className="text-green-300 text-xs mb-4">Countdown to the blessed celebration</p>
+    <div
+      className="w-full rounded-2xl p-6 text-center my-4"
+      style={{
+        background: "linear-gradient(135deg, #1a472a, #2d6a4f, #1a472a)",
+      }}
+    >
+      <div
+        className="text-4xl mb-2"
+        style={{ animation: "float 3s ease-in-out infinite" }}
+      >
+        🌙
+      </div>
+      <h3 className="text-yellow-400 text-xl font-medium mb-1">
+        Eid ul-Fitr 2026
+      </h3>
+      <p className="text-green-300 text-xs mb-4">
+        Countdown to the blessed celebration
+      </p>
 
       <div className="flex gap-3 justify-center flex-wrap">
         {[
@@ -65,15 +83,27 @@ function EidCountdown() {
           { val: timeLeft.mins, label: "Mins" },
           { val: timeLeft.secs, label: "Secs" },
         ].map(({ val, label }) => (
-          <div key={label} className="rounded-xl px-4 py-3 min-w-[70px]"
-            style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,215,0,0.3)" }}>
-            <span className="text-yellow-400 text-3xl font-medium block">{val}</span>
-            <span className="text-green-300 text-xs uppercase tracking-widest mt-1 block">{label}</span>
+          <div
+            key={label}
+            className="rounded-xl px-4 py-3 min-w-[70px]"
+            style={{
+              background: "rgba(255,255,255,0.12)",
+              border: "1px solid rgba(255,215,0,0.3)",
+            }}
+          >
+            <span className="text-yellow-400 text-3xl font-medium block">
+              {val}
+            </span>
+            <span className="text-green-300 text-xs uppercase tracking-widest mt-1 block">
+              {label}
+            </span>
           </div>
         ))}
       </div>
 
-      <p className="text-green-400 text-xs mt-4">🌟 Ramadan Mubarak — Eid is coming!</p>
+      <p className="text-green-400 text-xs mt-4">
+        🌟 Ramadan Mubarak — Eid is coming!
+      </p>
     </div>
   );
 }
@@ -82,9 +112,10 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const [postsLoading, setPostsLoading] = useState(true);
   const [postsError, setPostsError] = useState(false);
-  
 
   const [showIdModal, setShowIdModal] = useState(false);
+  const [showDocsModal, setShowDocsModal] = useState(false);
+  const [activeDoc, setActiveDoc] = useState("reg");
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const scrollRef = useRef(null);
   const animationRef = useRef(null);
@@ -213,8 +244,6 @@ export default function Home() {
     };
   }, [imagesLoaded]);
 
-  
-
   return (
     <div>
       <div className="flex flex-col gap-6 p-10 px-3 max-w-6xl mx-auto pt-4">
@@ -228,8 +257,8 @@ export default function Home() {
         <p className="text-xs text-gray-500 flex items-start gap-1">
           <span>📍</span>
           <span>
-            Vill- Narayan Pur, P.O- Amiya Narayan Pur, P.S- Thanar Para,
-            Dist- Nadia, Pin- 741165, West Bengal, India
+            Vill- Narayan Pur, P.O- Amiya Narayan Pur, P.S- Thanar Para, Dist-
+            Nadia, Pin- 741165, West Bengal, India
           </span>
         </p>
 
@@ -241,16 +270,14 @@ export default function Home() {
           and work towards building a compassionate and inclusive society.
         </p>
 
-        {/* BUTTONS */}
+       {/* BUTTONS */}
         <div className="flex justify-center gap-4 mt-4 flex-wrap">
-          <a
-            href="https://drive.google.com/file/d/1EI5mRZY-mGfezAxVz605lU3yC6Al9xfo/preview"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2 text-sm sm:text-base font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition"
+          <button
+            onClick={() => setShowDocsModal(true)}
+            className="px-6 py-2.5 text-sm sm:text-base font-semibold text-white bg-teal-700 rounded-lg hover:bg-teal-800 transition shadow-md"
           >
-            View Registration Certificate
-          </a>
+            📋 View Official Documents
+          </button>
 
           {/* NEW DOWNLOAD APP BUTTON */}
           <a
@@ -275,21 +302,27 @@ export default function Home() {
                 NEW
               </span>
             </button>
-<a
-href="/blood-donation"
-  className="relative inline-flex items-center gap-2 px-6 py-2.5 text-sm sm:text-base font-bold text-white rounded-xl hover:scale-105 transition-all duration-300"
-  style={{
-    background: "linear-gradient(135deg,#7f0000,#e53935)",
-    boxShadow: "0 4px 14px rgba(183,28,28,0.5)",
-  }}
->
-  <span style={{fontSize:18}}>🩸</span>
-  <span className="tracking-wide">NGO Event & Certification Hub</span>
-  <span className="absolute -top-2.5 -right-2.5 px-2 py-0.5 text-[10px] font-black text-white rounded-full"
-    style={{background:"linear-gradient(135deg,#f59e0b,#fbbf24)"}}>
-    NEW
-  </span>
-</a>
+            <a
+              href="/blood-donation"
+              className="relative inline-flex items-center gap-2 px-6 py-2.5 text-sm sm:text-base font-bold text-white rounded-xl hover:scale-105 transition-all duration-300"
+              style={{
+                background: "linear-gradient(135deg,#7f0000,#e53935)",
+                boxShadow: "0 4px 14px rgba(183,28,28,0.5)",
+              }}
+            >
+              <span style={{ fontSize: 18 }}>🩸</span>
+              <span className="tracking-wide">
+                NGO Event & Certification Hub
+              </span>
+              <span
+                className="absolute -top-2.5 -right-2.5 px-2 py-0.5 text-[10px] font-black text-white rounded-full"
+                style={{
+                  background: "linear-gradient(135deg,#f59e0b,#fbbf24)",
+                }}
+              >
+                NEW
+              </span>
+            </a>
           </div>
         </div>
 
@@ -329,6 +362,80 @@ href="/blood-donation"
               >
                 Cancel
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* DOCUMENTS MODAL */}
+        {showDocsModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl">
+              
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-lg font-bold dark:text-white">Official Documents</h2>
+                <button
+                  onClick={() => setShowDocsModal(false)}
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-white text-2xl leading-none"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Tabs */}
+              <div className="flex border-b border-gray-200 dark:border-gray-700 px-5 gap-1">
+                {[
+                  { id: "reg", label: "🏛️ Registration" },
+                  { id: "tax12a", label: "📄 12A Certificate" },
+                  { id: "tax80g", label: "📄 80G Certificate" },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveDoc(tab.id)}
+                    className={`px-4 py-3 text-sm font-medium border-b-2 transition ${
+                      activeDoc === tab.id
+                        ? "border-teal-600 text-teal-700 dark:text-teal-400"
+                        : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* PDF Viewer */}
+              <div className="flex-1 overflow-hidden p-4">
+                <iframe
+                  key={activeDoc}
+                  src={
+                    activeDoc === "reg"
+                      ? "/images/register.pdf"
+                      : activeDoc === "tax12a"
+                      ? "/images/bipader1.pdf"
+                      : "/images/bipader2.pdf"
+                  }
+                  className="w-full h-[60vh] rounded-lg border border-gray-200 dark:border-gray-700"
+                  title="Document Viewer"
+                />
+              </div>
+
+              {/* Footer */}
+              <div className="px-5 py-3 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+                <a
+                  href={
+                    activeDoc === "reg"
+                      ? "/images/register.pdf"
+                      : activeDoc === "tax12a"
+                      ? "/images/bipader1.pdf"
+                      : "/images/bipader2.pdf"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 text-sm text-teal-700 border border-teal-600 rounded hover:bg-teal-50 transition"
+                >
+                  Open in New Tab ↗
+                </a>
+              </div>
             </div>
           </div>
         )}
@@ -389,7 +496,7 @@ href="/blood-donation"
           <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4"></p>
         </div>
 
-       {/* EID UL-FITR COUNTDOWN */}
+        {/* EID UL-FITR COUNTDOWN */}
         <EidCountdown />
 
         <div className="p-3 bg-amber-100 dark:bg-slate-700 rounded-lg">
@@ -431,8 +538,6 @@ href="/blood-donation"
           )}
         </div>
       </div>
-
-    
     </div>
   );
 }
