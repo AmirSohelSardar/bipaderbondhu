@@ -494,7 +494,7 @@ export default function Home() {
 
   {/* NEW LINE ADDED */}
   <p className="text-sm text-gray-700 font-semibold tracking-wide">
-  ESTD 2020
+  ESTD: 2020
 </p>
 
   <p className="text-sm text-gray-600 font-medium">
