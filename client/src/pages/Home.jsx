@@ -488,12 +488,18 @@ export default function Home() {
   return (
     <div>
       <div className="flex flex-col gap-6 p-10 px-3 max-w-6xl mx-auto pt-4">
-        <h1 className="text-3xl font-bold lg:text-6xl pt-10">
-          Narayan Pur Bipader Bondhu Welfare Society
-        </h1>
-        <p className="text-sm text-gray-600 font-medium">
-          Govt. Registered NGO • Reg. No: S0042589 of 2024–2025
-        </p>
+  <h1 className="text-3xl font-bold lg:text-6xl pt-10">
+    Narayan Pur Bipader Bondhu Welfare Society
+  </h1>
+
+  {/* NEW LINE ADDED */}
+  <p className="text-sm text-gray-700 font-semibold tracking-wide">
+  ESTD 2020
+</p>
+
+  <p className="text-sm text-gray-600 font-medium">
+    Govt. Registered NGO • Reg. No: S0042589 of 2024–2025
+  </p>
 
         <p className="text-xs text-gray-500 flex items-start gap-1">
           <span>📍</span>

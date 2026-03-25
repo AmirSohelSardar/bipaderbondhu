@@ -99,7 +99,7 @@ export default function CallToAction() {
           <div className='content-col'>
 
             <div className='heading-block'>
-              <p className='eyebrow'>Narayan Pur Welfare Society</p>
+              <p className='eyebrow'>Narayan Pur Bipader Bondhu Welfare Society</p>
               <h2 className='main-heading'>
                 Join Our Mission
                 <span className='heading-accent'> of Hope &amp; Humanity</span>
