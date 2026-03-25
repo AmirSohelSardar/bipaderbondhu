@@ -108,6 +108,154 @@ function EidCountdown() {
   );
 }
 
+// ── ADD YOUR YOUTUBE VIDEOS HERE (newest first) ──────────────────────────────
+const YOUTUBE_VIDEOS = [
+  // { id: "new id here", title: "new vide here" },
+  { id: "u2E-IXbCsxs", title: "রক্ত দান জীবন দান, আসুন সবাই এই মহৎ কাজে সঙ্গ দিই" },
+  { id: "mncbUIk813U", title: "bipader bondhu annually program 2026" },
+  { id: "XybksDJaFzE", title: "26 th. January. 77 তম প্রজাতন্ত্র দিবস উদযাপিত করা হইল বিপদের বন্ধু ওয়েলফেয়ার সোসাইটির অফিসে 2026" },
+  { id: "z6WF5N0dLcw", title: "space science # Narayanpur bipader bondhu welfare society 2025" },
+  { id: "x1q0lAJ1cMw", title: "নদিয়া এসপির নেতৃত্বে অ্যাডিশনাল এসপি উপস্থিতিতে ও থানাপাড়া থানার ওসি সৌরভ কুমার চট্টোপাধ্যায় 2025" },
+  { id: "4hP8xRZC3lQ", title: "B - negative রক্তদান করলেন ভাই 11 তম।" },
+  { id: "jzUKKI2HbPc", title: "নারায়নপুর বিপদের বন্ধু ওয়েলফেয়ার সোসাইটির পক্ষ থেকে দুর্গাপূজা উপলক্ষে বস্ত্র দান 2025" },
+  // To add more: paste { id: "VIDEO_ID", title: "Title" }, above this line
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
+function VideoThumb({ video, index, isActive, onClick }) {
+  const [hovered, setHovered] = useState(false);
+  const thumb = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="flex-shrink-0 cursor-pointer"
+      style={{ width: "clamp(160px, 42vw, 220px)" }}
+    >
+      <div
+        className="relative rounded-xl overflow-hidden"
+        style={{
+          aspectRatio: "16/9",
+          boxShadow: isActive
+            ? "0 0 0 3px #0d9488, 0 8px 24px rgba(13,148,136,0.4)"
+            : hovered
+            ? "0 6px 20px rgba(0,0,0,0.22)"
+            : "0 2px 8px rgba(0,0,0,0.13)",
+          transform: hovered || isActive ? "scale(1.04)" : "scale(1)",
+          transition: "all 0.22s ease",
+        }}
+      >
+        <img
+          src={thumb}
+          alt={video.title}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div
+          className="absolute inset-0 bg-black transition-opacity duration-200"
+          style={{ opacity: hovered ? 0.22 : 0.08 }}
+        />
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ transition: "transform 0.2s", transform: hovered ? "scale(1.18)" : "scale(1)" }}
+        >
+          <div
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-xl"
+            style={{ background: isActive ? "#0d9488" : "rgba(255,255,255,0.93)" }}
+          >
+            {isActive ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <rect x="6" y="5" width="4" height="14" rx="1" />
+                <rect x="14" y="5" width="4" height="14" rx="1" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#0d9488">
+                <polygon points="7,4 21,12 7,20" />
+              </svg>
+            )}
+          </div>
+        </div>
+        {index === 0 && (
+          <span className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500 text-white shadow-md animate-pulse">
+            NEW
+          </span>
+        )}
+        {isActive && (
+          <span className="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-600 text-white shadow-md">
+            PLAYING
+          </span>
+        )}
+      </div>
+      <p className="mt-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 truncate px-0.5">
+        {video.title}
+      </p>
+    </div>
+  );
+}
+
+function YouTubeSection() {
+  const [activeVideo, setActiveVideo] = useState(null);
+
+  return (
+    <div className="w-full my-6 px-0">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-5">
+        <div className="w-1 h-7 bg-teal-600 rounded-full" />
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white tracking-tight">
+          🎬 Our Videos
+        </h2>
+        <span className="ml-auto text-xs text-gray-400 dark:text-gray-500 font-medium">
+          {YOUTUBE_VIDEOS.length} videos
+        </span>
+      </div>
+
+      {/* Featured Player */}
+      {activeVideo !== null && (
+        <div
+          className="mb-5 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-black w-full"
+          style={{ aspectRatio: "16/9", maxHeight: 480 }}
+        >
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEOS[activeVideo].id}?autoplay=1&rel=0&modestbranding=1&fs=1`}
+            title={YOUTUBE_VIDEOS[activeVideo].title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowFullScreen
+            className="w-full h-full"
+            style={{ border: "none" }}
+          />
+        </div>
+      )}
+
+      {/* Thumbnail Strip */}
+      <div className="relative">
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10" />
+        <div
+          className="flex gap-3 sm:gap-4 overflow-x-auto pb-2"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {YOUTUBE_VIDEOS.map((video, idx) => (
+            <VideoThumb
+              key={video.id}
+              video={video}
+              index={idx}
+              isActive={activeVideo === idx}
+              onClick={() => setActiveVideo(idx)}
+            />
+          ))}
+        </div>
+      </div>
+
+      {activeVideo === null && (
+        <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-3">
+          👆 Tap any thumbnail to watch here
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [postsLoading, setPostsLoading] = useState(true);
@@ -498,6 +646,9 @@ export default function Home() {
 
         {/* EID UL-FITR COUNTDOWN */}
         <EidCountdown />
+
+        {/* YOUTUBE VIDEO SECTION */}
+        <YouTubeSection />
 
         <div className="p-3 bg-amber-100 dark:bg-slate-700 rounded-lg">
           <CallToAction />
