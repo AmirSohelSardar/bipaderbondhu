@@ -125,69 +125,92 @@ const YOUTUBE_VIDEOS = [
 function VideoThumb({ video, index, isActive, onClick }) {
   const [hovered, setHovered] = useState(false);
   const thumb = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
+
   return (
     <div
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="flex-shrink-0 cursor-pointer"
-      style={{ width: "clamp(160px, 42vw, 220px)" }}
+      style={{ width: "clamp(155px, 40vw, 210px)" }}
     >
       <div
-        className="relative rounded-xl overflow-hidden"
+        className="relative rounded-2xl p-[2px] transition-all duration-300"
         style={{
-          aspectRatio: "16/9",
-          boxShadow: isActive
-            ? "0 0 0 3px #0d9488, 0 8px 24px rgba(13,148,136,0.4)"
+          background: isActive
+            ? "linear-gradient(135deg, #0d9488, #06b6d4, #0d9488)"
             : hovered
-            ? "0 6px 20px rgba(0,0,0,0.22)"
-            : "0 2px 8px rgba(0,0,0,0.13)",
-          transform: hovered || isActive ? "scale(1.04)" : "scale(1)",
-          transition: "all 0.22s ease",
+            ? "linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899)"
+            : "linear-gradient(135deg, #e5e7eb, #d1d5db)",
+          boxShadow: isActive
+            ? "0 0 20px rgba(13,148,136,0.5), 0 8px 32px rgba(13,148,136,0.25)"
+            : hovered
+            ? "0 8px 28px rgba(99,102,241,0.35)"
+            : "0 2px 10px rgba(0,0,0,0.1)",
+          transform: hovered || isActive ? "translateY(-4px) scale(1.03)" : "translateY(0) scale(1)",
+          transition: "all 0.28s cubic-bezier(0.34,1.56,0.64,1)",
         }}
       >
-        <img
-          src={thumb}
-          alt={video.title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-        <div
-          className="absolute inset-0 bg-black transition-opacity duration-200"
-          style={{ opacity: hovered ? 0.22 : 0.08 }}
-        />
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ transition: "transform 0.2s", transform: hovered ? "scale(1.18)" : "scale(1)" }}
-        >
+        <div className="relative rounded-2xl overflow-hidden bg-black" style={{ aspectRatio: "16/9" }}>
+          <img
+            src={thumb}
+            alt={video.title}
+            className="w-full h-full object-cover"
+            style={{ transform: hovered ? "scale(1.08)" : "scale(1)", transition: "transform 0.5s ease" }}
+            loading="lazy"
+          />
           <div
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-xl"
-            style={{ background: isActive ? "#0d9488" : "rgba(255,255,255,0.93)" }}
-          >
-            {isActive ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-                <rect x="6" y="5" width="4" height="14" rx="1" />
-                <rect x="14" y="5" width="4" height="14" rx="1" />
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="#0d9488">
-                <polygon points="7,4 21,12 7,20" />
-              </svg>
-            )}
+            className="absolute inset-0 transition-opacity duration-300"
+            style={{
+              background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%)",
+              opacity: hovered ? 1 : 0.6,
+            }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div
+              className="flex items-center justify-center rounded-full shadow-2xl"
+              style={{
+                width: hovered || isActive ? 48 : 40,
+                height: hovered || isActive ? 48 : 40,
+                background: isActive ? "rgba(13,148,136,0.95)" : "rgba(255,255,255,0.92)",
+                backdropFilter: "blur(4px)",
+                transition: "all 0.28s ease",
+              }}
+            >
+              {isActive ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                  <rect x="6" y="5" width="4" height="14" rx="1.5" />
+                  <rect x="14" y="5" width="4" height="14" rx="1.5" />
+                </svg>
+              ) : (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#0d9488">
+                  <polygon points="7,4 21,12 7,20" />
+                </svg>
+              )}
+            </div>
           </div>
+          {index === 0 && (
+            <span
+              className="absolute top-2 left-2 text-[10px] font-black px-2 py-0.5 rounded-full text-white shadow-lg animate-pulse"
+              style={{ background: "linear-gradient(135deg, #ef4444, #f97316)" }}
+            >
+              NEW
+            </span>
+          )}
+          {isActive && (
+            <span
+              className="absolute top-2 right-2 text-[10px] font-black px-2 py-0.5 rounded-full text-white shadow-lg"
+              style={{ background: "linear-gradient(135deg, #0d9488, #06b6d4)" }}
+            >
+              ▶ PLAYING
+            </span>
+          )}
         </div>
-        {index === 0 && (
-          <span className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500 text-white shadow-md animate-pulse">
-            NEW
-          </span>
-        )}
-        {isActive && (
-          <span className="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-600 text-white shadow-md">
-            PLAYING
-          </span>
-        )}
       </div>
-      <p className="mt-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 truncate px-0.5">
+      <p
+        className="mt-2 text-xs sm:text-sm font-semibold truncate px-1 transition-colors duration-200"
+        style={{ color: isActive ? "#0d9488" : hovered ? "#6366f1" : undefined }}
+      >
         {video.title}
       </p>
     </div>
@@ -198,22 +221,26 @@ function YouTubeSection() {
   const [activeVideo, setActiveVideo] = useState(null);
 
   return (
-    <div className="w-full my-6 px-0">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-1 h-7 bg-teal-600 rounded-full" />
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white tracking-tight">
-          🎬 Our Videos
-        </h2>
-        <span className="ml-auto text-xs text-gray-400 dark:text-gray-500 font-medium">
-          {YOUTUBE_VIDEOS.length} videos
-        </span>
+    <div className="w-full my-4">
+
+      {/* Header — centered */}
+      <div className="flex flex-col items-center mb-6">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-2xl">🎬</span>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-gray-800 dark:text-white tracking-tight">
+            Our Videos
+          </h2>
+        </div>
+        <div className="h-1 w-16 rounded-full bg-teal-500 mb-1" />
+        <p className="text-xs text-gray-400 dark:text-gray-500">
+          {YOUTUBE_VIDEOS.length} videos • tap to watch
+        </p>
       </div>
 
-      {/* Featured Player */}
+      {/* Featured Player with ✕ close button */}
       {activeVideo !== null && (
         <div
-          className="mb-5 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-black w-full"
+          className="relative mb-6 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-black w-full"
           style={{ aspectRatio: "16/9", maxHeight: 480 }}
         >
           <iframe
@@ -224,15 +251,34 @@ function YouTubeSection() {
             className="w-full h-full"
             style={{ border: "none" }}
           />
+          {/* Close button */}
+          <button
+            onClick={() => setActiveVideo(null)}
+            className="absolute top-3 right-3 z-20 flex items-center justify-center w-9 h-9 rounded-full text-white font-bold text-base shadow-xl transition-all duration-200 hover:scale-110 active:scale-95"
+            style={{
+              background: "rgba(0,0,0,0.65)",
+              backdropFilter: "blur(6px)",
+              border: "1.5px solid rgba(255,255,255,0.25)",
+            }}
+          >
+            ✕
+          </button>
+          {/* Now playing bar */}
+          <div
+            className="absolute bottom-0 left-0 right-0 px-4 py-2 text-xs text-white font-medium truncate"
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)" }}
+          >
+            ▶ {YOUTUBE_VIDEOS[activeVideo].title}
+          </div>
         </div>
       )}
 
       {/* Thumbnail Strip */}
       <div className="relative">
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10" />
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10" />
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10" />
         <div
-          className="flex gap-3 sm:gap-4 overflow-x-auto pb-2"
+          className="flex gap-3 sm:gap-4 overflow-x-auto pb-3"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {YOUTUBE_VIDEOS.map((video, idx) => (
@@ -248,7 +294,7 @@ function YouTubeSection() {
       </div>
 
       {activeVideo === null && (
-        <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-3">
+        <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-2">
           👆 Tap any thumbnail to watch here
         </p>
       )}
@@ -647,15 +693,16 @@ export default function Home() {
         {/* EID UL-FITR COUNTDOWN */}
         <EidCountdown />
 
-        {/* YOUTUBE VIDEO SECTION */}
-        <YouTubeSection />
-
         <div className="p-3 bg-amber-100 dark:bg-slate-700 rounded-lg">
           <CallToAction />
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-3">
+     <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-3">
+
+        {/* YOUTUBE VIDEO SECTION */}
+        <YouTubeSection />
+
         <div className="flex flex-col gap-6">
           <h2 className="text-2xl font-semibold text-center">Recent Posts</h2>
 
