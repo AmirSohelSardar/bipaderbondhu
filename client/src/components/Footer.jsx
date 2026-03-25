@@ -114,6 +114,21 @@ useEffect(() => {
             {/* Social Icons */}
             <div className="flex space-x-4 text-xl mt-5">
               <a
+                href="https://www.youtube.com/@bipaderbondhu/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-red-500 transition hover:scale-110"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </a>
+              <a
                 href="https://www.facebook.com/people/%E0%A6%AC%E0%A6%BF%E0%A6%AA%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A6%A8%E0%A7%8D%E0%A6%A7%E0%A7%81-%E0%A6%93%E0%A6%AF%E0%A6%BC%E0%A7%87%E0%A6%B2%E0%A6%AB%E0%A7%87%E0%A6%AF%E0%A6%BC%E0%A6%BE%E0%A6%B0-%E0%A6%B8%E0%A7%8B%E0%A6%B8%E0%A6%BE%E0%A6%87%E0%A6%9F%E0%A6%BF/61552748199798/"
                 target="_blank"
                 rel="noopener noreferrer"

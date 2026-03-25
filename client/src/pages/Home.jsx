@@ -4,22 +4,41 @@ import { useEffect, useState, useRef } from "react";
 import PostCard from "../components/PostCard";
 import SkeletonPostCard from "../components/SkeletonPostCard";
 
-function EidCountdown() {
+function NavratriWidget() {
   const [timeLeft, setTimeLeft] = useState(null);
-  const [isEid, setIsEid] = useState(false);
+  const [isDuring, setIsDuring] = useState(false);
+  const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
-    const eidDate = new Date("2026-03-21T00:00:00");
+    const startDate = new Date("2026-03-19T00:00:00");
+    const endDate = new Date("2026-03-27T23:59:59");
 
     const tick = () => {
       const now = new Date();
-      const diff = eidDate - now;
 
-      if (diff <= 0) {
-        setIsEid(true);
+      if (now >= startDate && now <= endDate) {
+        setIsDuring(true);
+        setIsOver(false);
+
+        const diff = endDate - now;
+        setTimeLeft({
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          mins: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+          secs: Math.floor((diff % (1000 * 60)) / 1000),
+        });
         return;
       }
 
+      if (now > endDate) {
+        setIsOver(true);
+        setIsDuring(false);
+        return;
+      }
+
+      setIsDuring(false);
+      setIsOver(false);
+      const diff = startDate - now;
       setTimeLeft({
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
@@ -33,47 +52,77 @@ function EidCountdown() {
     return () => clearInterval(timer);
   }, []);
 
-  if (isEid) {
+  // Festival is over — show nothing (or swap to next festival)
+  if (isOver) return null;
+
+  // During Navratri — show celebration card
+  if (isDuring) {
     return (
       <div
         className="w-full rounded-2xl p-8 text-center my-4"
         style={{
-          background: "linear-gradient(135deg, #1a472a, #2d6a4f, #1a472a)",
+          background: "linear-gradient(135deg, #7c2d12, #c2410c, #d97706, #7c2d12)",
         }}
       >
-        <div className="text-5xl mb-3 animate-bounce">🌙</div>
-        <h2 className="text-3xl font-semibold text-yellow-400 mb-1">
-          Eid Mubarak!
+        <div className="text-5xl mb-3 animate-bounce">🪔</div>
+        <h2 className="text-3xl font-semibold text-yellow-300 mb-1">
+          Shubh Navratri!
         </h2>
-        <p className="text-green-200 text-xl mb-3">عيد مبارك</p>
-        <p className="text-green-100 text-base max-w-sm mx-auto">
-          Wishing you and your family joy, peace, and blessings this Eid
-          ul-Fitr. May Allah accept your prayers. 🌟
+        <p className="text-orange-200 text-xl mb-2">शुभ नवरात्रि 🙏</p>
+        <p className="text-orange-100 text-sm max-w-sm mx-auto mb-4">
+          Maa Durga blesses us all! May these nine divine days bring you
+          strength, joy, and prosperity. Jai Mata Di! 🌸
         </p>
+        {timeLeft && (
+          <div>
+            <p className="text-yellow-400 text-xs mb-3">⏳ Navratri ends in</p>
+            <div className="flex gap-3 justify-center flex-wrap">
+              {[
+                { val: timeLeft.days, label: "Days" },
+                { val: timeLeft.hours, label: "Hours" },
+                { val: timeLeft.mins, label: "Mins" },
+                { val: timeLeft.secs, label: "Secs" },
+              ].map(({ val, label }) => (
+                <div
+                  key={label}
+                  className="rounded-xl px-4 py-3 min-w-[70px]"
+                  style={{
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,215,0,0.3)",
+                  }}
+                >
+                  <span className="text-yellow-300 text-3xl font-medium block">{val}</span>
+                  <span className="text-orange-300 text-xs uppercase tracking-widest mt-1 block">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 
+  // Before Navratri — show countdown
   if (!timeLeft) return null;
 
   return (
     <div
       className="w-full rounded-2xl p-6 text-center my-4"
       style={{
-        background: "linear-gradient(135deg, #1a472a, #2d6a4f, #1a472a)",
+        background: "linear-gradient(135deg, #7c2d12, #c2410c, #d97706, #7c2d12)",
       }}
     >
       <div
         className="text-4xl mb-2"
         style={{ animation: "float 3s ease-in-out infinite" }}
       >
-        🌙
+        🪔
       </div>
-      <h3 className="text-yellow-400 text-xl font-medium mb-1">
-        Eid ul-Fitr 2026
+      <h3 className="text-yellow-300 text-xl font-medium mb-1">
+        Chaitra Navratri 2026
       </h3>
-      <p className="text-green-300 text-xs mb-4">
-        Countdown to the blessed celebration
+      <p className="text-orange-300 text-xs mb-4">
+        Countdown to the divine nine nights • 19 Mar – 27 Mar
       </p>
 
       <div className="flex gap-3 justify-center flex-wrap">
@@ -91,18 +140,14 @@ function EidCountdown() {
               border: "1px solid rgba(255,215,0,0.3)",
             }}
           >
-            <span className="text-yellow-400 text-3xl font-medium block">
-              {val}
-            </span>
-            <span className="text-green-300 text-xs uppercase tracking-widest mt-1 block">
-              {label}
-            </span>
+            <span className="text-yellow-300 text-3xl font-medium block">{val}</span>
+            <span className="text-orange-300 text-xs uppercase tracking-widest mt-1 block">{label}</span>
           </div>
         ))}
       </div>
 
-      <p className="text-green-400 text-xs mt-4">
-        🌟 Ramadan Mubarak — Eid is coming!
+      <p className="text-yellow-400 text-xs mt-4">
+        🌸 Jai Mata Di — Navratri is coming!
       </p>
     </div>
   );
@@ -127,10 +172,12 @@ function VideoThumb({ video, index, isActive, onClick }) {
   const thumb = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
 
   return (
-    <div
-      onClick={onClick}
+   <div
+      onClick={() => { setHovered(true); onClick(); setTimeout(() => setHovered(false), 400); }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onTouchStart={() => setHovered(true)}
+      onTouchEnd={() => setTimeout(() => setHovered(false), 400)}
       className="flex-shrink-0 cursor-pointer"
       style={{ width: "clamp(155px, 40vw, 210px)" }}
     >
@@ -690,8 +737,9 @@ export default function Home() {
           <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4"></p>
         </div>
 
-        {/* EID UL-FITR COUNTDOWN */}
-        <EidCountdown />
+        
+        {/* CHAITRA NAVRATRI */}
+<NavratriWidget />
 
         <div className="p-3 bg-amber-100 dark:bg-slate-700 rounded-lg">
           <CallToAction />
