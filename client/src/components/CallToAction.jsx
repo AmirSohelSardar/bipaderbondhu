@@ -1,29 +1,40 @@
-import { Button } from 'flowbite-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function CallToAction() {
   const [donors, setDonors] = useState(0);
   const [aid, setAid] = useState(0);
   const [support, setSupport] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const cardRef = useRef(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.2 }
+    );
+    if (cardRef.current) observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
     const donorsTarget = 2500;
     const aidTarget = 300;
     const supportTarget = 24;
-    const duration = 2000; // 2 seconds
+    const duration = 2000;
     const steps = 60;
     const interval = duration / steps;
-
     let currentStep = 0;
-
     const timer = setInterval(() => {
       currentStep++;
-      const progress = currentStep / steps;
-      
-      setDonors(Math.floor(donorsTarget * progress));
-      setAid(Math.floor(aidTarget * progress));
-      setSupport(Math.floor(supportTarget * progress));
-
+      const progress = Math.min(currentStep / steps, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setDonors(Math.floor(donorsTarget * ease));
+      setAid(Math.floor(aidTarget * ease));
+      setSupport(Math.floor(supportTarget * ease));
       if (currentStep >= steps) {
         setDonors(donorsTarget);
         setAid(aidTarget);
@@ -31,141 +42,536 @@ export default function CallToAction() {
         clearInterval(timer);
       }
     }, interval);
-
     return () => clearInterval(timer);
-  }, []);
+  }, [isVisible]);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  };
 
   return (
-    <div className='relative overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl my-4 max-w-4xl mx-auto group hover:shadow-2xl transition-all duration-500'>
-      {/* Animated gradient border effect */}
-      <div className='absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl'></div>
-      
-      {/* Floating particles animation */}
-      <div className='absolute top-10 left-10 w-2 h-2 bg-purple-400 rounded-full animate-ping opacity-50'></div>
-      <div className='absolute top-20 right-20 w-2 h-2 bg-pink-400 rounded-full animate-ping opacity-50' style={{animationDelay: '1s'}}></div>
-      <div className='absolute bottom-10 left-20 w-2 h-2 bg-purple-400 rounded-full animate-ping opacity-50' style={{animationDelay: '2s'}}></div>
-      
-      <div className='relative flex flex-col-reverse lg:flex-row items-center gap-6 p-6 lg:p-8 bg-gradient-to-br from-transparent via-purple-50/30 to-pink-50/30 dark:via-purple-900/10 dark:to-pink-900/10'>
-        {/* Image Section with 3D effect */}
-        <div className='flex-shrink-0 perspective-1000'>
-          <div className='relative group/img'>
-            {/* Rotating gradient ring */}
-            <div className='absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-full opacity-75 blur group-hover/img:opacity-100 animate-spin-slow'></div>
-            
-            {/* Pulse effect */}
-            <div className='absolute -inset-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-30 animate-pulse'></div>
-            
-            <img
-              className='relative w-32 h-32 lg:w-36 lg:h-36 object-cover rounded-full border-4 border-white dark:border-gray-800 shadow-2xl transform transition-all duration-500 group-hover/img:scale-110 group-hover/img:rotate-6'
-              src='/images/profile.png'
-              alt='Bipader Bondhu'
-            />
-            
-            {/* Heart beat indicator */}
-            {/* <div className='absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-red-500 to-pink-600 rounded-full flex items-center justify-center shadow-lg animate-pulse'>
-              <svg className='w-5 h-5 text-white' fill='currentColor' viewBox='0 0 20 20'>
-                <path fillRule='evenodd' d='M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z' clipRule='evenodd' />
-              </svg>
-            </div> */}
+    <>
+      <div
+        className='cta-wrapper'
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+      >
+        {/* Mouse-following ambient glow */}
+        <div
+          className='mouse-glow'
+          style={{ left: `${mousePos.x}%`, top: `${mousePos.y}%` }}
+        />
+
+        {/* Dot-grid texture overlay */}
+        <div className='dot-grid' />
+
+        {/* Top shimmer bar */}
+        <div className='shimmer-bar' />
+
+        <div className={`cta-inner ${isVisible ? 'visible' : ''}`}>
+
+          {/* ── LEFT: Image Column ── */}
+          <div className='image-col'>
+            <div className='image-ring-wrapper'>
+              <div className='orbit-ring'>
+                <div className='orbit-dot' />
+              </div>
+              <div className='image-halo' />
+              <img
+                src='/images/profile.png'
+                alt='Bipader Bondhu'
+                className='profile-img'
+              />
+            </div>
+
+            <div className='live-badge'>
+              <span className='live-dot' />
+              <span>Actively Serving</span>
+            </div>
+          </div>
+
+          {/* ── RIGHT: Content Column ── */}
+          <div className='content-col'>
+
+            <div className='heading-block'>
+              <p className='eyebrow'>Narayan Pur Welfare Society</p>
+              <h2 className='main-heading'>
+                Join Our Mission
+                <span className='heading-accent'> of Hope &amp; Humanity</span>
+              </h2>
+              <p className='subtext'>
+                Discover our impactful initiatives in social welfare, emergency relief,
+                and community empowerment — standing beside people when it matters most.
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className='stats-row'>
+              <div className='stat-card'>
+                <div className='stat-icon'>🩸</div>
+                <div className='stat-number stat-purple'>{donors.toLocaleString()}+</div>
+                <div className='stat-label'>Blood Donors</div>
+              </div>
+              <div className='stat-divider' />
+              <div className='stat-card'>
+                <div className='stat-icon'>💰</div>
+                <div className='stat-number stat-rose'>{aid}+</div>
+                <div className='stat-label'>Financial Aid</div>
+              </div>
+              <div className='stat-divider' />
+              <div className='stat-card'>
+                <div className='stat-icon'>🕐</div>
+                <div className='stat-number stat-indigo'>{support}/7</div>
+                <div className='stat-label'>Support</div>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className='btn-row'>
+              <a href='/search' className='btn-primary'>
+                <span>Discover Our Impact</span>
+                <svg width='15' height='15' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} d='M13 7l5 5m0 0l-5 5m5-5H6' />
+                </svg>
+                <div className='btn-shine' />
+              </a>
+              <a href='/about' className='btn-secondary'>
+                <span>Learn Our Story</span>
+                <svg width='15' height='15' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' />
+                </svg>
+              </a>
+            </div>
+
           </div>
         </div>
 
-        {/* Content Section */}
-        <div className='flex-1 space-y-4 text-center lg:text-left'>
-          <div className='space-y-2'>
-            <div className='inline-block animate-bounce'>
-              <span className='inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full text-xs font-semibold text-purple-700 dark:text-purple-300'>
-                <span className='w-2 h-2 bg-green-500 rounded-full animate-pulse'></span>
-                Actively Serving
-              </span>
-            </div>
-            
-            <h2 className='text-2xl lg:text-3xl font-extrabold text-gray-900 dark:text-white leading-tight'>
-              Join Our Mission of
-              <span className='block bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent mt-1 bg-[length:200%_auto] animate-gradient'>
-                Hope & Humanity
-              </span>
-            </h2>
-            <p className='text-sm text-gray-600 dark:text-gray-300 leading-relaxed'>
-              Discover our impactful initiatives in social welfare, emergency relief, and community empowerment.
-            </p>
-          </div>
-
-          {/* Animated Stats Cards */}
-          <div className='flex flex-wrap justify-center lg:justify-start gap-3 py-2'>
-            <div className='group/card bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 px-4 py-2 rounded-xl hover:scale-110 hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-purple-200 dark:border-purple-700'>
-              <div className='text-lg font-bold text-purple-600 dark:text-purple-400 group-hover/card:scale-110 transition-transform'>{donors}+</div>
-              <div className='text-xs text-purple-700 dark:text-purple-300'>Blood Donors</div>
-            </div>
-            
-            <div className='group/card bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 px-4 py-2 rounded-xl hover:scale-110 hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-pink-200 dark:border-pink-700'>
-              <div className='text-lg font-bold text-pink-600 dark:text-pink-400 group-hover/card:scale-110 transition-transform'>{aid}+</div>
-              <div className='text-xs text-pink-700 dark:text-pink-300'>Financial Aid</div>
-            </div>
-            
-            {/* <div className='group/card bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 px-4 py-2 rounded-xl hover:scale-110 hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-purple-200 dark:border-purple-700'>
-              <div className='text-lg font-bold text-purple-600 dark:text-purple-400 group-hover/card:scale-110 transition-transform'>50+</div>
-              <div className='text-xs text-purple-700 dark:text-purple-300'>Projects</div>
-            </div> */}
-            
-            <div className='group/card bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 px-4 py-2 rounded-xl hover:scale-110 hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-pink-200 dark:border-pink-700'>
-              <div className='text-lg font-bold text-pink-600 dark:text-pink-400 group-hover/card:scale-110 transition-transform'>{support}/7</div>
-              <div className='text-xs text-pink-700 dark:text-pink-300'>Support</div>
-            </div>
-          </div>
-
-          {/* Animated CTA Buttons */}
-          <div className='flex flex-col sm:flex-row gap-3 justify-center lg:justify-start'>
-            <a href='/search' className='group/btn relative overflow-hidden'>
-              <div className='absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300'></div>
-              <Button 
-                gradientDuoTone='purpleToPink' 
-                size='sm'
-                className='relative w-full sm:w-auto hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl'
-              >
-                <span className='flex items-center gap-2 text-sm font-semibold'>
-                  Discover Our Impact
-                  <svg className='w-4 h-4 transform group-hover/btn:translate-x-2 group-hover/btn:scale-125 transition-all duration-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} d='M13 7l5 5m0 0l-5 5m5-5H6' />
-                  </svg>
-                </span>
-              </Button>
-            </a>
-            
-            <a href='/about' className='group/btn2'>
-              <Button 
-                color='light'
-                size='sm'
-                className='w-full sm:w-auto border-2 border-purple-500 dark:border-purple-400 bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-400 hover:!bg-purple-600 hover:!text-white dark:hover:!bg-purple-500 hover:border-purple-600 hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg font-bold'
-              >
-                <span className='text-sm font-semibold flex items-center gap-2'>
-                  Learn Our Story
-                  <svg className='w-4 h-4 transform group-hover/btn2:rotate-12 transition-transform duration-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' />
-                  </svg>
-                </span>
-              </Button>
-            </a>
-          </div>
+        {/* Bottom registration tag */}
+        <div className='bottom-tag'>
+          🌟 Govt. Registered NGO &nbsp;·&nbsp; Reg. No: S0042589 of 2024–2025
         </div>
       </div>
-      
-      <style jsx>{`
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+        /* ─────────────────────────────────────────
+           WRAPPER
+        ───────────────────────────────────────── */
+        .cta-wrapper {
+          position: relative;
+          overflow: hidden;
+          border-radius: 24px;
+          margin: 24px auto;
+          max-width: 860px;
+          background: linear-gradient(135deg, #0f0c29 0%, #1b1040 45%, #24243e 100%);
+          border: 1px solid rgba(139, 92, 246, 0.22);
+          box-shadow:
+            0 0 0 1px rgba(255,255,255,0.04),
+            0 32px 64px -12px rgba(0, 0, 0, 0.65),
+            0 0 80px -20px rgba(139, 92, 246, 0.28);
+          font-family: 'DM Sans', sans-serif;
+          transition: box-shadow 0.4s ease;
+        }
+
+        .cta-wrapper:hover {
+          box-shadow:
+            0 0 0 1px rgba(167,139,250,0.2),
+            0 40px 80px -12px rgba(0,0,0,0.7),
+            0 0 100px -15px rgba(139,92,246,0.4);
+        }
+
+        /* ─────────────────────────────────────────
+           MOUSE GLOW
+        ───────────────────────────────────────── */
+        .mouse-glow {
+          position: absolute;
+          width: 480px;
+          height: 480px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(167,139,250,0.1) 0%, transparent 65%);
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+          transition: left 0.08s linear, top 0.08s linear;
+          z-index: 0;
+        }
+
+        /* ─────────────────────────────────────────
+           DOT GRID TEXTURE
+        ───────────────────────────────────────── */
+        .dot-grid {
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
+          background-size: 22px 22px;
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        /* ─────────────────────────────────────────
+           TOP SHIMMER BAR
+        ───────────────────────────────────────── */
+        .shimmer-bar {
+          position: relative;
+          z-index: 1;
+          height: 3px;
+          background: linear-gradient(90deg, #7c3aed, #ec4899, #f97316, #ec4899, #7c3aed);
+          background-size: 300% auto;
+          animation: bar-move 4s linear infinite;
+        }
+
+        @keyframes bar-move {
+          0%   { background-position: 0% center; }
+          100% { background-position: 300% center; }
+        }
+
+        /* ─────────────────────────────────────────
+           INNER LAYOUT
+        ───────────────────────────────────────── */
+        .cta-inner {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 28px;
+          padding: 32px 24px 22px;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+        }
+
+        .cta-inner.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @media (min-width: 768px) {
+          .cta-inner {
+            flex-direction: row;
+            align-items: center;
+            padding: 40px 44px 30px;
+            gap: 40px;
+          }
+        }
+
+        /* ─────────────────────────────────────────
+           IMAGE COLUMN
+        ───────────────────────────────────────── */
+        .image-col {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 14px;
+          flex-shrink: 0;
+        }
+
+        .image-ring-wrapper {
+          position: relative;
+          width: 136px;
+          height: 136px;
+        }
+
+        @media (min-width: 768px) {
+          .image-ring-wrapper { width: 148px; height: 148px; }
+        }
+
+        /* Orbiting dashed ring */
+        .orbit-ring {
+          position: absolute;
+          inset: -12px;
+          border-radius: 50%;
+          border: 1.5px dashed rgba(167,139,250,0.3);
+          animation: spin-slow 12s linear infinite;
+        }
+
+        .orbit-dot {
+          position: absolute;
+          top: -5px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 9px;
+          height: 9px;
+          background: linear-gradient(135deg, #a78bfa, #f472b6);
+          border-radius: 50%;
+          box-shadow: 0 0 10px rgba(167,139,250,0.9);
+        }
+
         @keyframes spin-slow {
           from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          to   { transform: rotate(360deg); }
         }
-        @keyframes gradient {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+
+        /* Conic gradient halo */
+        .image-halo {
+          position: absolute;
+          inset: -5px;
+          border-radius: 50%;
+          background: conic-gradient(from 0deg, #7c3aed, #ec4899, #f97316, #7c3aed);
+          animation: spin-slow 5s linear infinite;
+          z-index: 0;
         }
-        .animate-spin-slow {
-          animation: spin-slow 3s linear infinite;
+
+        .profile-img {
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+          border: 4px solid #110e2d;
+          box-shadow: 0 0 28px rgba(124,58,237,0.45), 0 8px 24px rgba(0,0,0,0.5);
+          transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
         }
-        .animate-gradient {
-          animation: gradient 3s ease infinite;
+
+        .cta-wrapper:hover .profile-img {
+          transform: scale(1.06) rotate(2deg);
+        }
+
+        /* Live badge */
+        .live-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          background: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.1);
+          backdrop-filter: blur(10px);
+          border-radius: 100px;
+          padding: 5px 14px;
+          font-size: 11px;
+          font-weight: 600;
+          color: #c4b5fd;
+          letter-spacing: 0.05em;
+          white-space: nowrap;
+        }
+
+        .live-dot {
+          width: 7px;
+          height: 7px;
+          background: #22c55e;
+          border-radius: 50%;
+          box-shadow: 0 0 7px rgba(34,197,94,0.8);
+          animation: pulse-dot 1.6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50%       { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        /* ─────────────────────────────────────────
+           CONTENT COLUMN
+        ───────────────────────────────────────── */
+        .content-col {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          text-align: center;
+        }
+
+        @media (min-width: 768px) {
+          .content-col { text-align: left; }
+        }
+
+        /* Heading */
+        .heading-block { display: flex; flex-direction: column; gap: 8px; }
+
+        .eyebrow {
+          margin: 0;
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #a78bfa;
+        }
+
+        .main-heading {
+          margin: 0;
+          font-family: 'Playfair Display', Georgia, serif;
+          font-size: clamp(20px, 3.5vw, 28px);
+          font-weight: 900;
+          line-height: 1.2;
+          color: #f5f3ff;
+        }
+
+        .heading-accent {
+          background: linear-gradient(90deg, #a78bfa 0%, #f472b6 50%, #fb923c 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: gradient-flow 4s ease infinite;
+        }
+
+        @keyframes gradient-flow {
+          0%, 100% { background-position: 0% center; }
+          50%       { background-position: 200% center; }
+        }
+
+        .subtext {
+          margin: 0;
+          font-size: 13px;
+          line-height: 1.7;
+          color: rgba(196,181,253,0.65);
+          max-width: 440px;
+        }
+
+        /* ─────────────────────────────────────────
+           STATS
+        ───────────────────────────────────────── */
+        .stats-row {
+          display: flex;
+          align-items: stretch;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.07);
+          border-radius: 16px;
+          overflow: hidden;
+        }
+
+        .stat-card {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 3px;
+          padding: 14px 8px;
+          transition: background 0.25s ease;
+          cursor: default;
+        }
+
+        .stat-card:hover { background: rgba(255,255,255,0.05); }
+
+        .stat-icon { font-size: 17px; line-height: 1; }
+
+        .stat-number {
+          font-family: 'Playfair Display', serif;
+          font-size: 20px;
+          font-weight: 700;
+          line-height: 1;
+        }
+
+        .stat-purple { color: #a78bfa; }
+        .stat-rose   { color: #fb7185; }
+        .stat-indigo { color: #818cf8; }
+
+        .stat-label {
+          font-size: 9.5px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(196,181,253,0.45);
+        }
+
+        .stat-divider {
+          width: 1px;
+          background: rgba(255,255,255,0.07);
+          flex-shrink: 0;
+          align-self: stretch;
+        }
+
+        /* ─────────────────────────────────────────
+           BUTTONS
+        ───────────────────────────────────────── */
+        .btn-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+          .btn-row { justify-content: flex-start; }
+        }
+
+        .btn-primary {
+          position: relative;
+          overflow: hidden;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 11px 22px;
+          border-radius: 100px;
+          background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+          color: #fff;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 13px;
+          font-weight: 600;
+          text-decoration: none;
+          box-shadow: 0 4px 22px rgba(124,58,237,0.45), inset 0 0 0 1px rgba(255,255,255,0.12);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 8px 32px rgba(124,58,237,0.55), inset 0 0 0 1px rgba(255,255,255,0.18);
+          color: #fff;
+          text-decoration: none;
+        }
+
+        .btn-primary:active { transform: scale(0.97); }
+
+        .btn-shine {
+          position: absolute;
+          top: 0; left: -100%;
+          width: 55%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          transform: skewX(-18deg);
+          animation: shine-move 3.5s ease-in-out infinite;
+        }
+
+        @keyframes shine-move {
+          0%       { left: -100%; }
+          35%, 100% { left: 160%; }
+        }
+
+        .btn-secondary {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 22px;
+          border-radius: 100px;
+          background: transparent;
+          color: #c4b5fd;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 13px;
+          font-weight: 600;
+          text-decoration: none;
+          border: 1.5px solid rgba(167,139,250,0.35);
+          transition: all 0.25s ease;
+          white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+          background: rgba(167,139,250,0.1);
+          border-color: rgba(167,139,250,0.65);
+          color: #e9d5ff;
+          transform: translateY(-2px);
+          text-decoration: none;
+        }
+
+        /* ─────────────────────────────────────────
+           BOTTOM TAG
+        ───────────────────────────────────────── */
+        .bottom-tag {
+          position: relative;
+          z-index: 1;
+          text-align: center;
+          padding: 10px 20px 14px;
+          font-size: 10.5px;
+          font-weight: 500;
+          letter-spacing: 0.04em;
+          color: rgba(167,139,250,0.38);
+          border-top: 1px solid rgba(255,255,255,0.05);
         }
       `}</style>
-    </div>
+    </>
   );
 }
