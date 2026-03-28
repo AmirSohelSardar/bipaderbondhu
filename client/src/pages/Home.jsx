@@ -156,6 +156,7 @@ function NavratriWidget() {
 // ── ADD YOUR YOUTUBE VIDEOS HERE (newest first) ──────────────────────────────
 const YOUTUBE_VIDEOS = [
   // { id: "new id here", title: "new vide here" },
+  { id: "f1miCme5za0", title: "মানবতার সৈনিক সংগঠন এর তরফ থেকে রক্ত দান শিবির এ উপস্থিত ছিলাম।" },
   { id: "u2E-IXbCsxs", title: "রক্ত দান জীবন দান, আসুন সবাই এই মহৎ কাজে সঙ্গ দিই" },
   { id: "mncbUIk813U", title: "bipader bondhu annually program 2026" },
   { id: "XybksDJaFzE", title: "26 th. January. 77 তম প্রজাতন্ত্র দিবস উদযাপিত করা হইল বিপদের বন্ধু ওয়েলফেয়ার সোসাইটির অফিসে 2026" },
