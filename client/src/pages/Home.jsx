@@ -4,14 +4,14 @@ import { useEffect, useState, useRef } from "react";
 import PostCard from "../components/PostCard";
 import SkeletonPostCard from "../components/SkeletonPostCard";
 
-function NavratriWidget() {
+function EidUlAdhaWidget() {
   const [timeLeft, setTimeLeft] = useState(null);
   const [isDuring, setIsDuring] = useState(false);
   const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
-    const startDate = new Date("2026-03-19T00:00:00");
-    const endDate = new Date("2026-03-27T23:59:59");
+    const startDate = new Date("2026-06-07T00:00:00");
+    const endDate = new Date("2026-06-10T23:59:59");
 
     const tick = () => {
       const now = new Date();
@@ -19,7 +19,6 @@ function NavratriWidget() {
       if (now >= startDate && now <= endDate) {
         setIsDuring(true);
         setIsOver(false);
-
         const diff = endDate - now;
         setTimeLeft({
           days: Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -52,30 +51,29 @@ function NavratriWidget() {
     return () => clearInterval(timer);
   }, []);
 
-  // Festival is over — show nothing (or swap to next festival)
   if (isOver) return null;
+  if (!timeLeft) return null;
 
-  // During Navratri — show celebration card
   if (isDuring) {
     return (
       <div
         className="w-full rounded-2xl p-8 text-center my-4"
         style={{
-          background: "linear-gradient(135deg, #7c2d12, #c2410c, #d97706, #7c2d12)",
+          background: "linear-gradient(135deg, #064e3b, #065f46, #047857, #064e3b)",
         }}
       >
-        <div className="text-5xl mb-3 animate-bounce">🪔</div>
-        <h2 className="text-3xl font-semibold text-yellow-300 mb-1">
-          Shubh Navratri!
+        <div className="text-5xl mb-3" style={{ animation: "float 3s ease-in-out infinite" }}>🕌</div>
+        <h2 className="text-3xl font-semibold mb-1" style={{ color: "#fcd34d" }}>
+          Eid ul-Adha Mubarak!
         </h2>
-        <p className="text-orange-200 text-xl mb-2">शुभ नवरात्रि 🙏</p>
-        <p className="text-orange-100 text-sm max-w-sm mx-auto mb-4">
-          Maa Durga blesses us all! May these nine divine days bring you
-          strength, joy, and prosperity. Jai Mata Di! 🌸
+        <p className="text-xl mb-2" style={{ color: "#6ee7b7" }}>عيد الأضحى مبارك 🌙</p>
+        <p className="text-sm max-w-sm mx-auto mb-4" style={{ color: "#a7f3d0" }}>
+          May Allah accept your sacrifices and devotion. Wishing you and your
+          family peace, joy, and countless blessings this Eid. Eid Mubarak! ✨
         </p>
         {timeLeft && (
           <div>
-            <p className="text-yellow-400 text-xs mb-3">⏳ Navratri ends in</p>
+            <p className="text-xs mb-3" style={{ color: "#fcd34d" }}>⏳ Eid celebrations end in</p>
             <div className="flex gap-3 justify-center flex-wrap">
               {[
                 { val: timeLeft.days, label: "Days" },
@@ -88,11 +86,11 @@ function NavratriWidget() {
                   className="rounded-xl px-4 py-3 min-w-[70px]"
                   style={{
                     background: "rgba(255,255,255,0.12)",
-                    border: "1px solid rgba(255,215,0,0.3)",
+                    border: "1px solid rgba(252,211,77,0.3)",
                   }}
                 >
-                  <span className="text-yellow-300 text-3xl font-medium block">{val}</span>
-                  <span className="text-orange-300 text-xs uppercase tracking-widest mt-1 block">{label}</span>
+                  <span className="text-3xl font-medium block" style={{ color: "#fcd34d" }}>{val}</span>
+                  <span className="text-xs uppercase tracking-widest mt-1 block" style={{ color: "#6ee7b7" }}>{label}</span>
                 </div>
               ))}
             </div>
@@ -102,27 +100,21 @@ function NavratriWidget() {
     );
   }
 
-  // Before Navratri — show countdown
-  if (!timeLeft) return null;
-
+  // Countdown before Eid
   return (
     <div
       className="w-full rounded-2xl p-6 text-center my-4"
       style={{
-        background: "linear-gradient(135deg, #7c2d12, #c2410c, #d97706, #7c2d12)",
+        background: "linear-gradient(135deg, #064e3b, #065f46, #047857, #064e3b)",
       }}
     >
-      <div
-        className="text-4xl mb-2"
-        style={{ animation: "float 3s ease-in-out infinite" }}
-      >
-        🪔
-      </div>
-      <h3 className="text-yellow-300 text-xl font-medium mb-1">
-        Chaitra Navratri 2026
+      <div className="text-4xl mb-2" style={{ animation: "float 3s ease-in-out infinite" }}>🕌</div>
+      <h3 className="text-xl font-medium mb-1" style={{ color: "#fcd34d" }}>
+        Eid ul-Adha 2026
       </h3>
-      <p className="text-orange-300 text-xs mb-4">
-        Countdown to the divine nine nights • 19 Mar – 27 Mar
+      <p className="text-xs mb-1" style={{ color: "#6ee7b7" }}>عيد الأضحى مبارك</p>
+      <p className="text-xs mb-4" style={{ color: "#6ee7b7" }}>
+        Countdown to the blessed day • 7 Jun – 10 Jun 2026
       </p>
 
       <div className="flex gap-3 justify-center flex-wrap">
@@ -137,17 +129,17 @@ function NavratriWidget() {
             className="rounded-xl px-4 py-3 min-w-[70px]"
             style={{
               background: "rgba(255,255,255,0.12)",
-              border: "1px solid rgba(255,215,0,0.3)",
+              border: "1px solid rgba(252,211,77,0.3)",
             }}
           >
-            <span className="text-yellow-300 text-3xl font-medium block">{val}</span>
-            <span className="text-orange-300 text-xs uppercase tracking-widest mt-1 block">{label}</span>
+            <span className="text-3xl font-medium block" style={{ color: "#fcd34d" }}>{val}</span>
+            <span className="text-xs uppercase tracking-widest mt-1 block" style={{ color: "#6ee7b7" }}>{label}</span>
           </div>
         ))}
       </div>
 
-      <p className="text-yellow-400 text-xs mt-4">
-        🌸 Jai Mata Di — Navratri is coming!
+      <p className="text-xs mt-4" style={{ color: "#fcd34d" }}>
+        🌙 Eid ul-Adha is coming — May Allah bless us all!
       </p>
     </div>
   );
@@ -745,8 +737,8 @@ export default function Home() {
         </div>
 
         
-        {/* CHAITRA NAVRATRI */}
-<NavratriWidget />
+        {/* EID UL-ADHA */}
+<EidUlAdhaWidget />
 
         <div className="p-3 bg-amber-100 dark:bg-slate-700 rounded-lg">
           <CallToAction />
