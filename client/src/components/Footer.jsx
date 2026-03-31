@@ -92,12 +92,23 @@ useEffect(() => {
               <p className="flex items-center gap-2">
                 <FaEnvelope />
                 <a
+                  href="mailto:admin@bipaderbondhu.in"
+                  className="hover:text-white transition"
+                >
+                  admin@bipaderbondhu.in
+                </a>
+              </p>
+
+              <p className="flex items-center gap-2">
+                <FaEnvelope />
+                <a
                   href="mailto:narayanpurbipaderbondhu@gmail.com"
                   className="hover:text-white transition"
                 >
                   narayanpurbipaderbondhu@gmail.com
                 </a>
               </p>
+              
 
               {/* Second Email */}
   <p className="flex items-center gap-2">
