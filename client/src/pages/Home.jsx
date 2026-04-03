@@ -738,7 +738,7 @@ export default function Home() {
           <AnimatedStat target={2500} suffix="+" label="Blood Donors Served" icon="🩸" />
           <AnimatedStat target={300} suffix="+" label="Financial Aid Cases" icon="🤝" />
           <AnimatedStat target={5} suffix="+" label="Years of Service" icon="📅" />
-          <AnimatedStat target={2892} suffix="" label="Website Visits" icon="👁" />
+          <AnimatedStat target={3000} suffix="+" label="Website Visits" icon="👁" />
         </div>
 
         <div className="inner-page">
