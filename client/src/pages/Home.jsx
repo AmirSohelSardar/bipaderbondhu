@@ -124,11 +124,25 @@ function VideoThumb({ video, index, isActive, onClick }) {
 
 function YouTubeSection() {
   const [activeVideo, setActiveVideo] = useState(null);
+const scrollRef = useRef(null);
+
+const scrollLeft = () => {
+  scrollRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+};
+
+const scrollRight = () => {
+  scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+};
   const [ref, visible] = useScrollReveal(0.1);
   return (
     <section ref={ref} className={`yt-section reveal-block ${visible ? "revealed" : ""}`}>
-      <div className="section-label">🎬 Official Activities</div>
-      <h2 className="section-heading">Our Videos</h2>
+    <div className="section-label" style={{ textAlign: "center" }}>
+  🎬 Official Activities
+</div>
+
+<h2 className="section-heading" style={{ textAlign: "center" }}>
+  Our Videos
+</h2>
       <p className="section-sub">{YOUTUBE_VIDEOS.length} videos · tap to watch</p>
       {activeVideo !== null && (
         <div className="yt-player">
@@ -142,18 +156,30 @@ function YouTubeSection() {
           <div className="yt-now-playing">▶ {YOUTUBE_VIDEOS[activeVideo].title}</div>
         </div>
       )}
-      <div className="yt-strip-wrap">
-        <div className="yt-fade-left" />
-        <div className="yt-fade-right" />
-        <div className="yt-strip">
-          {YOUTUBE_VIDEOS.map((v, i) => (
-            <VideoThumb key={v.id} video={v} index={i} isActive={activeVideo === i} onClick={() => setActiveVideo(i)} />
-          ))}
-        </div>
-      </div>
-      {activeVideo === null && <p className="yt-hint">👆 Tap any thumbnail to watch here</p>}
-    </section>
-  );
+  <div className="yt-strip-wrap">
+
+  <button className="yt-btn left" onClick={scrollLeft}>◀</button>
+
+  <div className="yt-fade-left" />
+  <div className="yt-fade-right" />
+
+  <div className="yt-strip" ref={scrollRef}>
+    {YOUTUBE_VIDEOS.map((v, i) => (
+      <VideoThumb
+        key={v.id}
+        video={v}
+        index={i}
+        isActive={activeVideo === i}
+        onClick={() => setActiveVideo(i)}
+      />
+    ))}
+  </div>
+
+  <button className="yt-btn right" onClick={scrollRight}>▶</button>
+</div>
+{activeVideo === null && <p className="yt-hint">👆 Tap any thumbnail to watch here</p>}
+</section>
+);
 }
 
 /* ─── STATS ──────────────────────────────────────────────────────── */
@@ -685,6 +711,27 @@ export default function Home() {
         .modal-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
         .modal-cancel { display: block; text-align: center; margin-top: 8px; color: var(--muted); font-size: 0.83rem; font-family: sans-serif; cursor: pointer; }
         .modal-cancel:hover { color: var(--white); }
+
+        .yt-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 5;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.yt-btn.left { left: 5px; }
+.yt-btn.right { right: 5px; }
+
+.yt-btn:hover {
+  background: rgba(13,148,136,0.8);
+}
 
         /* docs modal */
         .docs-modal {
