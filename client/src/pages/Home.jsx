@@ -26,11 +26,12 @@ function EidUlAdhaWidget() {
   const [timeLeft, setTimeLeft] = useState(null);
   const [isDuring, setIsDuring] = useState(false);
   const [isOver, setIsOver] = useState(false);
-  const [ref, visible] = useScrollReveal();
+  const ref = null;
+const visible = true;
 
   useEffect(() => {
-    const startDate = new Date("2026-05-27T00:00:00");
-    const endDate = new Date("2026-05-27T23:59:59");
+    const startDate = new Date(2026, 4, 27);
+const endDate = new Date(2026, 4, 27, 23, 59, 59);
     const tick = () => {
       const now = new Date();
       if (now >= startDate && now <= endDate) {
@@ -49,10 +50,11 @@ function EidUlAdhaWidget() {
     return () => clearInterval(t);
   }, []);
 
-  if (isOver || !timeLeft) return null;
+  if (isOver) return null;
+if (!timeLeft) return <p>Loading...</p>;
 
   return (
-    <div ref={ref} className={`reveal-block ${visible ? "revealed" : ""}`}>
+    <div>
       <div className="eid-widget">
         <div className="eid-glow" />
         <div className="eid-inner">
@@ -125,7 +127,7 @@ function YouTubeSection() {
   const [ref, visible] = useScrollReveal(0.1);
   return (
     <section ref={ref} className={`yt-section reveal-block ${visible ? "revealed" : ""}`}>
-      <div className="section-label">🎬 Media</div>
+      <div className="section-label">🎬 Official Activities</div>
       <h2 className="section-heading">Our Videos</h2>
       <p className="section-sub">{YOUTUBE_VIDEOS.length} videos · tap to watch</p>
       {activeVideo !== null && (
@@ -133,7 +135,7 @@ function YouTubeSection() {
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_VIDEOS[activeVideo].id}?autoplay=1&rel=0&modestbranding=1&fs=1`}
             title={YOUTUBE_VIDEOS[activeVideo].title}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-; gyroscope; picture-in-picture; fullscreen"
             allowFullScreen
           />
           <button className="yt-close" onClick={() => setActiveVideo(null)}>✕</button>
@@ -762,7 +764,7 @@ export default function Home() {
 
           {/* POSTS */}
           <section ref={postsRef} className={`posts-section reveal-block ${postsVisible ? "revealed" : ""}`}>
-            <div className="section-label">📰 News</div>
+            <div className="section-label">📰 Activity Updates</div>
             <h2 className="section-heading">Recent Posts</h2>
             <div className="posts-grid">
               {postsLoading && Array(6).fill(0).map((_, i) => <SkeletonPostCard key={i} />)}
