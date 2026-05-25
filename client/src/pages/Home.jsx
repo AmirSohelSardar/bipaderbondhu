@@ -903,8 +903,8 @@ function EidUlAdhaWidget() {
   const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
-    const startDate = new Date("2026-05-27T00:00:00");
-const endDate = new Date("2026-05-27T23:59:59");
+    const startDate = new Date("2026-05-28T00:00:00");
+const endDate = new Date("2026-05-28T23:59:59");
 
     const tick = () => {
       const now = new Date();
@@ -1007,7 +1007,7 @@ const endDate = new Date("2026-05-27T23:59:59");
       </h3>
       <p className="text-xs mb-1" style={{ color: "#6ee7b7" }}>عيد الأضحى مبارك</p>
       <p className="text-xs mb-4" style={{ color: "#6ee7b7" }}>
-       Countdown to the blessed day • 27 May 2026
+       Countdown to the blessed day • 28 May 2026
       </p>
 
       <div className="flex gap-3 justify-center flex-wrap">
