@@ -1041,6 +1041,7 @@ const endDate = new Date("2026-05-28T23:59:59");
 // ── ADD YOUR YOUTUBE VIDEOS HERE (newest first) ──────────────────────────────
 const YOUTUBE_VIDEOS = [
   // { id: "new id here", title: "new vide here" },
+  { id: "DwZi59Bt5V8", title: "দুর্গাপূজায় দুস্থদের বস্ত্র দানে সবাই সাহায্য করুন।" },
   { id: "f1miCme5za0", title: "মানবতার সৈনিক সংগঠন এর তরফ থেকে রক্ত দান শিবির এ উপস্থিত ছিলাম।" },
   { id: "u2E-IXbCsxs", title: "রক্ত দান জীবন দান, আসুন সবাই এই মহৎ কাজে সঙ্গ দিই" },
   { id: "mncbUIk813U", title: "bipader bondhu annually program 2026" },
